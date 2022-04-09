@@ -8,6 +8,7 @@ use App\ApiHelper as ResponseInterface;
 use App\Services\User as Service;
 use App\Services\Signature;
 use App\Helper\Chilkat\Config as Chilkat;
+use Illuminate\Support\Facades\File;
 
 class AuthControler extends Controller
 {
@@ -21,52 +22,65 @@ class AuthControler extends Controller
 
     public function signature(Request $request)
     {
-        $crypt = $this->getCkCrypt2();
-        //  AES is also known as Rijndael.
-        $crypt->CryptAlgorithm = 'aes';
+        try {
 
-        //  CipherMode may be "ecb" or "cbc"
-        $crypt->CipherMode = 'cbc';
+            $java = $this->getJavaKeyStore();
+            $jks = $java->key;
+            $jksPassword = 's04m4nd1r12021';
+            //  Load the Java keystore from a file.  The JKS file password is used
+            //  to verify the keyed digest that is found at the very end of the keystore.
+            //  It verifies that the keystore has not been modified.
+            $success = $jks->LoadFile($jksPassword,storage_path('app/apibmri.dev.jks'));
+            if ($success != true) {
+                $jks->lastErrorText();
 
-        //  KeyLength may be 128, 192, 256
-        $crypt->KeyLength = 256;
+            }
 
-        //  The padding scheme determines the contents of the bytes
-        //  that are added to pad the result to a multiple of the
-        //  encryption algorithm's block size.  AES has a block
-        //  size of 16 bytes, so encrypted output is always
-        //  a multiple of 16.
-        $crypt->PaddingScheme = 0;
+            //  Get the private key from the JKS.
+            //  The private key password may be different than the file password.
+            $privKeyPassword = 'secret';
+            $caseSensitive = false;
+            // privKey is a CkPrivateKey
+            $privKey = $jks->FindPrivateKey($privKeyPassword,'some.alias',$caseSensitive);
+            if ($jks->get_LastMethodSuccess() != true) {
+                throw new \Exception($jks->lastErrorText());
+            }
 
-        //  EncodingMode specifies the encoding of the output for
-        //  encryption, and the input for decryption.
-        //  It may be "hex", "url", "base64", or "quoted-printable".
-        $crypt->EncodingMode = 'hex';
+            //  Establish the RSA object and tell it to use the private key..
+            $rsa = $java->rsa;
 
-        //  An initialization vector is required if using CBC mode.
-        //  ECB mode does not use an IV.
-        //  The length of the IV is equal to the algorithm's block size.
-        //  It is NOT equal to the length of the key.
-        $ivHex = '000102030405060708090A0B0C0D0E0F';
-        $crypt->SetEncodedIV($ivHex,'hex');
+            $success = $rsa->ImportPrivateKeyObj($privKey);
 
-        //  The secret key must equal the size of the key.  For
-        //  256-bit encryption, the binary secret key is 32 bytes.
-        //  For 128-bit encryption, the binary secret key is 16 bytes.
-        $keyHex = '000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F';
-        $crypt->SetEncodedKey($keyHex,'hex');
+            if ($success != true) {
+                print $rsa->lastErrorText() . "\n";
+                exit;
+            }
 
-        //  Encrypt a string...
-        //  The input string is 44 ANSI characters (i.e. 44 bytes), so
-        //  the output should be 48 bytes (a multiple of 16).
-        //  Because the output is a hex string, it should
-        //  be 96 characters long (2 chars per byte).
-        $encStr = $crypt->encryptStringENC('The quick brown fox jumps over the lazy dog.');
-        return ResponseInterface::responseData(
-            [
-                'items' => $encStr,
-                'attributes' => ''
-            ]
-        );
+            //  Indicate we'll be signing the utf-8 byte representation of the string..
+            $rsa->put_Charset('utf-8');
+
+            //  Sign some plaintext using RSA-SHA256
+            $binarySignature = $java->binary;
+            $plaintext = 'this is the text to be signed';
+            $success = $rsa->SignString($plaintext,'SHA256',$binarySignature);
+            if ($rsa->get_LastMethodSuccess() != true) {
+                print $rsa->lastErrorText() . "\n";
+                exit;
+            }
+
+            //  Alternatively, if the signature is desired in some encoded string form,
+            //  such as base64, base64-url, hex, etc.
+            $rsa->put_EncodingMode('base64-url');
+            $signatureStr = $rsa->signStringENC($plaintext,'SHA256');
+            return ResponseInterface::responseData(
+                // [
+                //     'items' => $encStr,
+                //     'attributes' => ''
+                // ]
+            );
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }
