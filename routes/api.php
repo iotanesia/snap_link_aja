@@ -25,6 +25,7 @@ Route::prefix('v1')
 ->group(function () {
 
     Route::post('/login',[AuthControler::class,'login']);
+    Route::post('/signature',[AuthControler::class,'signature']);
 
     Route::prefix('user')
     ->middleware('admin')
