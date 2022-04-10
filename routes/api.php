@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\SignatureController;
 use App\Http\Controllers\Api\UserControler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\RSAController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/rsa',[RSAController::class, 'rsa']);
+
+//with middleware
 Route::prefix('v1')
 ->namespace('Api')
 ->middleware('general')

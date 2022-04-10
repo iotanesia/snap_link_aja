@@ -10,7 +10,7 @@ class SignatureController extends Controller
     public function auth(Request $request)
     {
         try {
-           
+
         } catch (\Throwable $th) {
             throw $th;
         }
