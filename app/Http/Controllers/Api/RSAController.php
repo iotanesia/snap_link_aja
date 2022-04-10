@@ -31,7 +31,5 @@ class RSAController extends Controller
 
     public function verify_rsa(){
 
-
-
     }
 }
