@@ -52,6 +52,29 @@ class ApiHelper {
         return response()->json($data, 200);
     }
 
+    static function errorResponse($EC, $EM, $data = false) {
+        if (!$data && [] !== $data) $data = json_decode("{}");
+
+        $data = [
+            "meta" => ['error' => $EC, 'message' => $EM ],
+            "data" => $data
+        ];
+
+        if ($EC > 0 || is_string($EC)) unset($data['data']);
+        return response()->json($data, 500);
+    }
+
+    static function unauthorizedResponse($EC, $EM, $data = false) {
+        if (!$data && [] !== $data) $data = json_decode("{}");
+
+        $data = [
+            "meta" => ['error' => $EC, 'message' => $EM ],
+            "data" => $data
+        ];
+
+        if ($EC > 0 || is_string($EC)) unset($data['data']);
+        return response()->json($data, 401);
+    }
 
     static function responseDownload($pathToFile,$filename)
     {
