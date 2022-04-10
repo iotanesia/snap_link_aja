@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthControler;
+use App\Http\Controllers\Api\SignatureController;
 use App\Http\Controllers\Api\UserControler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,10 +23,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('v1')
 ->namespace('Api')
+->middleware('general')
 ->group(function () {
 
     Route::post('/login',[AuthControler::class,'login']);
-    Route::post('/signature',[AuthControler::class,'signature']);
+    Route::post('/signature-auth',[SignatureController::class,'auth']);
 
     Route::prefix('user')
     ->middleware('admin')
