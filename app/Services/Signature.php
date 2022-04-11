@@ -40,7 +40,11 @@ class Signature {
 
     public static function generateToken($request)
     {
+
+
         try {
+            if($request->grantType) throw new \Exception("Bad Request", 400);
+            if($request->grantType != 'client_credentials') throw new \Exception("Bad Request", 400);
             Log::info(self::create($request)['signature']);
             return [
                 'token' => Helper::createJwtSignature([
