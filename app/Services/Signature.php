@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use App\Constants\Snap;
 use Illuminate\Support\Facades\Log;
+use App\ApiHelper as Helper;
+use Illuminate\Support\Facades\File;
 
 class Signature {
 
@@ -34,6 +36,17 @@ class Signature {
         $signature = $createSignature['signature'];
         $pubkeyid = Storage::get('public.key');
         return openssl_verify($plaintext, base64_decode($signature), $pubkeyid, Snap::RSA_TYPE);
+    }
+
+    public static function generateToken($request)
+    {
+        try {
+            return [
+                'token' => Helper::createJwtSignature($request->header('x-signature'))
+            ];
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
 }

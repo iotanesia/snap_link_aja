@@ -7,6 +7,7 @@ use Firebase\JWT\Key;
 use Firebase\JWT\ExpiredException;
 use App\Constants\ErrorCode as EC;
 use App\Constants\ErrorMessage as EM;
+use App\Constants\Snap;
 use App\Exceptions\CustomException;
 use Exception;
 use Illuminate\Support\Facades\Cache;
@@ -112,6 +113,28 @@ class ApiHelper {
             'exp' => $is_refresh_token
                 ?($issued_at + 60*60*24*30) // Waktu kadaluarsa 30 hari
                 :($issued_at + 60*60*4) // Waktu kadaluarsa 1 jam
+        ];
+
+        JWT::$leeway = 60; // $leeway dalam detik
+        // dd(env('JWT_SECRET'));
+        return JWT::encode($payload, 'LINK_AJA','HS256');
+    }
+
+    static function createJwtSignature($data = NULL, $is_refresh_token = FALSE) {
+        $issued_at = time();
+        $payload = [
+            'jti' => "",
+            'iss' => "jwt-iuser", // Issuer of the token
+            'sub' => $data, // Subject of the token
+            'aud' => [
+                'https://www.linkaja.id',
+                'https://www.linkaja.id/mitra',
+            ],
+            'clientid' => Snap::CLIENT_ID,
+            'iat' => $issued_at, // Time when JWT was issued.
+            'exp' => $is_refresh_token
+                ?($issued_at + 60*60*24*30) // Waktu kadaluarsa 30 hari
+                :($issued_at + 60) // Waktu kadaluarsa 10 menit
         ];
 
         JWT::$leeway = 60; // $leeway dalam detik

@@ -21,6 +21,8 @@ class SignatureController extends Controller
 
     public function hello(Request $request)
     {
-        dd('ss');
+        return ResponseInterface::resultResponse(
+            Signature::generateToken($request)
+        );
     }
 }
