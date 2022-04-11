@@ -4,10 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use App\ApiHelper as Helper;
-use App\Constants\ErrorCode as EC;
-use App\Constants\ErrorMessage as EM;
-class GeneralMiddleware
+use App\Services\Signature;
+class SignatureMiddleware
 {
     /**
      * Handle an incoming request.
@@ -19,16 +17,10 @@ class GeneralMiddleware
     public function handle(Request $request, Closure $next)
     {
         try {
-
-            $content_type = $request->header('content-type');
-            $content_type = $request->header('content-type');
-            if(!in_array($content_type,['application/json'])) throw new \Exception("Unauthorized", 401);
-
-            if(!$request->header('x-timestamp')) throw new \Exception("Bad Request", 400);
-            if(!$request->header('private-key')) throw new \Exception("Unauthorized", 401);
             if(!$request->header('x-client-key')) throw new \Exception("Unauthorized", 401);
+            if(!$request->header('x-signature')) throw new \Exception("Unauthorized", 401);
+            if(!Signature::verified($request)) throw new \Exception("Unauthorized", 401);
             return $next($request);
-
         } catch (\Throwable $th) {
             throw $th;
         }

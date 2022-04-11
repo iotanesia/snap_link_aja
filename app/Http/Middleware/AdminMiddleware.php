@@ -21,18 +21,23 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $token = $request->header('x-api-token');
-        if(!$token) return Helper::createResponse(EC::INVALID_ACCESS_TOKEN,EM::TOKEN_NOT_FOUND);
-        try {
-            $credentials = Helper::decodeJwt($token);
-        } catch(ExpiredException $e) {
-            return Helper::createResponse(EC::INVALID_ACCESS_TOKEN,EM::INVALID_ACCESS_TOKEN);
-        } catch(\Exception $e) {
-            return Helper::createResponse(EC::INVALID_ACCESS_TOKEN,EM::ERROR_ACCESS_TOKEN);
-        }
+       try {
+            $token = $request->header('x-api-token');
+            if(!$token) throw new \Exception("Bad Request", 400);
 
-        $user = User::admin($credentials->sub->id);
-        if (!$user['items']) return Helper::createResponse(EC::UNAUTHORIZED, EM::UNAUTHORIZED);
-        return $next($request);
+            try {
+                $credentials = Helper::decodeJwt($token);
+            } catch(ExpiredException $e) {
+                 throw new \Exception("unauthorized", 401);
+            } catch(\Exception $e) {
+                 throw new \Exception("unauthorized", 401);
+            }
+
+            $user = User::admin($credentials->sub->id);
+            if (!$user['items']) throw new \Exception("unauthorized", 401);
+            return $next($request);
+       } catch (\Throwable $th) {
+           throw $th;
+       }
     }
 }

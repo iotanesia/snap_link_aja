@@ -29,11 +29,17 @@ Route::get('/verify_rsa_test',[RSAController::class, 'verify_rsa_test']);
 //with middleware
 Route::prefix('v1')
 ->namespace('Api')
-->middleware('general')
 ->group(function () {
 
     Route::post('/login',[AuthControler::class,'login']);
-    Route::post('/signature-auth',[SignatureController::class,'auth']);
+
+    Route::post('/signature-auth',[SignatureController::class,'create']);
+
+    Route::middleware('signature')->group(function ()
+    {
+        Route::get('hello',[SignatureController::class,'hello']);
+    });
+
 
     Route::prefix('user')
     ->middleware('admin')

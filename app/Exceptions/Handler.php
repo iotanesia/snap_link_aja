@@ -86,26 +86,26 @@ class Handler extends ExceptionHandler
         $code = $this->error_code();
         $exception = $this->prepareException($exception);
 
+        $statusCode = $exception->getCode() ?? 500;
         if ($exception instanceof HttpResponseException) {
             $exception = $exception->getResponse();
+            $statusCode = 500;
         }
 
         if ($exception instanceof AuthenticationException) {
             $exception = $this->unauthenticated($request, $exception);
+            $statusCode = 401;
         }
 
         if ($exception instanceof ValidationException) {
             $exception = $this->convertValidationExceptionToResponse($exception, $request);
+            $statusCode = 400;
         }
-
         self::generateReport($exception,$code);
-        return ResponseInterface::errorResponse(ErrorCode::INTERNAL_ERROR_SERVER,[
-            "code" => $code,
-            "message" => $exception->getMessage(),
-            "file" => $exception->getFile(),
-            "line" => $exception->getLine(),
-            "trace" => $exception->getTraceAsString()
-        ]);
+        return ResponseInterface::_erorrResponse(
+            $exception->getMessage() == "" ? $exception->getTraceAsString() : $exception->getMessage()
+            ,$statusCode
+        );
     }
 
 }

@@ -28,6 +28,17 @@ class ApiHelper {
         return $result;
     }
 
+    static function resultResponse($data,$statusCode = 200){
+        return response()->json($data, $statusCode);
+    }
+
+    static function _erorrResponse($data,$statusCode = 200){
+        return response()->json([
+            "responseCode" => $statusCode,
+            "responseMessage" => $data
+        ], $statusCode);
+    }
+
     static function responseData($data = false){
         $response = [
             "meta" => [
@@ -104,7 +115,7 @@ class ApiHelper {
         ];
 
         JWT::$leeway = 60; // $leeway dalam detik
-        // dd(env('JWT_SECRET'));   
+        // dd(env('JWT_SECRET'));
         return JWT::encode($payload, 'LINK_AJA','HS256');
     }
 
