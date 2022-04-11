@@ -19,7 +19,7 @@ class SignatureMiddleware
         try {
             if(!$request->header('x-client-key')) throw new \Exception("Unauthorized", 401);
             if(!$request->header('x-signature')) throw new \Exception("Unauthorized", 401);
-            if(!Signature::verified($request)) throw new \Exception("Unauthorized", 401);
+            if(!Signature::verified($request)) throw new \Exception("Invalid Signature", 400);
             return $next($request);
         } catch (\Throwable $th) {
             throw $th;
