@@ -41,8 +41,11 @@ class Signature {
     public static function generateToken($request)
     {
         try {
+            Log::info(self::create($request)['signature']);
             return [
-                'token' => Helper::createJwtSignature($request->header('x-signature'))
+                'token' => Helper::createJwtSignature([
+                    'signature' => self::create($request)['signature']
+                ])
             ];
         } catch (\Throwable $th) {
             throw $th;

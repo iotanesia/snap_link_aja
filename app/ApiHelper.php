@@ -12,7 +12,7 @@ use App\Exceptions\CustomException;
 use Exception;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Carbon;
-
+use Illuminate\Support\Str;
 class ApiHelper {
 
      static function storageCache($key, $callback, $ttl = null )
@@ -123,7 +123,7 @@ class ApiHelper {
     static function createJwtSignature($data = NULL, $is_refresh_token = FALSE) {
         $issued_at = time();
         $payload = [
-            'jti' => "",
+            'jti' => Str::uuid(),
             'iss' => "jwt-iuser", // Issuer of the token
             'sub' => $data, // Subject of the token
             'aud' => [
@@ -132,14 +132,12 @@ class ApiHelper {
             ],
             'clientid' => Snap::CLIENT_ID,
             'iat' => $issued_at, // Time when JWT was issued.
-            'exp' => $is_refresh_token
-                ?($issued_at + 60*60*24*30) // Waktu kadaluarsa 30 hari
-                :($issued_at + 60) // Waktu kadaluarsa 10 menit
+            'exp' => $issued_at + 60
         ];
 
         JWT::$leeway = 60; // $leeway dalam detik
         // dd(env('JWT_SECRET'));
-        return JWT::encode($payload, 'LINK_AJA','HS256');
+        return JWT::encode($payload, (string) $data['signature'],'HS256');
     }
 
     static function createVerificationToken($data = NULL) {
