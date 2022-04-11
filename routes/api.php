@@ -23,6 +23,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/rsa',[RSAController::class, 'rsa']);
+Route::get('/verify_rsa',[RSAController::class, 'verify_rsa']);
+Route::get('/verify_rsa_test',[RSAController::class, 'verify_rsa_test']);
 
 //with middleware
 Route::prefix('v1')

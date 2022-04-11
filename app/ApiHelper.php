@@ -104,7 +104,8 @@ class ApiHelper {
         ];
 
         JWT::$leeway = 60; // $leeway dalam detik
-        return JWT::encode($payload, env('JWT_SECRET'),'HS256');
+        // dd(env('JWT_SECRET'));   
+        return JWT::encode($payload, 'LINK_AJA','HS256');
     }
 
     static function createVerificationToken($data = NULL) {
