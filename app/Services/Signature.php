@@ -31,7 +31,7 @@ class Signature {
         $createSignature = self::create($request);
         $timeStampIso = Carbon::now()->toIso8601String();
         $plaintext = $timeStampIso."|".$request->header('X-CLIENT-KEY');
-        $signature = base64_encode($createSignature['signature']);
+        $signature = $createSignature['signature'];
         $pubkeyid = Storage::get('public.key');
         return openssl_verify($plaintext, base64_decode($signature), $pubkeyid, Snap::RSA_TYPE);
     }
