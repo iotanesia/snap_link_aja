@@ -65,26 +65,22 @@ class Signature {
             $token = Helper::createJwtSignature([
                 'signature' => $signature
             ]);
-            $payload = self::generateSecondSignature($request);
-            $hmacs = hash_hmac('sha512', $payload, $request->header('x-client-secret'));
-            $hmac = sprintf('%02x', $hmacs);
-            // dd($payload);
+            $payload = self::generateSecondSignature($request, json_encode($request->all(),true));
+            $bodyHex = Helper::strToHex(json_encode($request->all(),true));
+            $payloadHex = self::generateSecondSignature($request, $bodyHex);
+            $hmac = hash_hmac('sha512', $payloadHex, $request->header('x-client-secret'));
             return [
-                'signature' => $signature,
-                'token' => $token,
-                'token_is_verified' => Helper::decodeJwtSignature($token,$signature) ? true : false,
-                'payload' => $payload,
-                'hmac' => $hmac,
+                'signature_service' => $hmac,
             ];
         } catch (\Throwable $th) {
             throw $th;
         }
     }
 
-    public static function generateSecondSignature($request)
+    public static function generateSecondSignature($request, $body)
     {
         try {
-            $payload = $request->header('HttpMethod').':'.$request->header('EndpointUrl').':'.$request->header('AccessToken').':'.(string) json_encode($request->all(),true).':'.$request->header('X-TIMESTAMP').':';
+            $payload = $request->header('HttpMethod').':'.$request->header('EndpointUrl').':'.$request->header('AccessToken').':'.(string) $body.':'.$request->header('X-TIMESTAMP').':';
             return $payload;
 
         } catch (\Throwable $th) {
