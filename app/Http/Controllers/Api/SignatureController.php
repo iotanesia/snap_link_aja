@@ -19,7 +19,7 @@ class SignatureController extends Controller
         }
     }
 
-    public function hello(Request $request)
+    public function generateToken(Request $request)
     {
         return ResponseInterface::resultResponse(
             Signature::generateToken($request)

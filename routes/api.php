@@ -22,7 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/rsa',[RSAController::class, 'rsa']);
+Route::get('/create-signature',[RSAController::class, 'rsa']);
 Route::get('/verify_rsa',[RSAController::class, 'verify_rsa']);
 Route::get('/verify_rsa_test',[RSAController::class, 'verify_rsa_test']);
 
@@ -37,7 +37,7 @@ Route::prefix('v1')
 
     Route::middleware('signature')->group(function ()
     {
-        Route::post('hello',[SignatureController::class,'hello']);
+        Route::post('generate-token',[SignatureController::class,'generateToken']);
     });
 
     Route::post('signature-service',[SignatureController::class,'service']);
