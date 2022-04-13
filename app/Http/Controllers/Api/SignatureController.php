@@ -25,4 +25,11 @@ class SignatureController extends Controller
             Signature::generateToken($request)
         );
     }
+
+    public function service(Request $request)
+    {
+        return ResponseInterface::resultResponse(
+            Signature::getSignatureService($request)
+        );
+    }
 }

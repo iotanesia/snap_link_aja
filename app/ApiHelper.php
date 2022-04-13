@@ -125,7 +125,7 @@ class ApiHelper {
         $payload = [
             'jti' => Str::uuid(),
             'iss' => "jwt-iuser", // Issuer of the token
-            'sub' => $data, // Subject of the token
+            'sub' => "link-aja", // Subject of the token
             'aud' => [
                 'https://www.linkaja.id',
                 'https://www.linkaja.id/mitra',
@@ -138,6 +138,19 @@ class ApiHelper {
         JWT::$leeway = 60; // $leeway dalam detik
         // dd(env('JWT_SECRET'));
         return JWT::encode($payload, (string) $data['signature'],'HS256');
+    }
+
+    static function decodeJwtSignature($token,$secret) {
+        try {
+            return JWT::decode($token,new Key($secret, 'HS256'));
+        } catch(\Throwable $e) {
+            throw $e;
+        }
+    }
+
+    static function base64url_encode($str)
+    {
+        return rtrim(strtr(base64_encode($str), '+/', '-_'), '=');
     }
 
     static function createVerificationToken($data = NULL) {

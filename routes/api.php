@@ -37,9 +37,12 @@ Route::prefix('v1')
 
     Route::middleware('signature')->group(function ()
     {
-        Route::get('hello',[SignatureController::class,'hello']);
+        Route::post('hello',[SignatureController::class,'hello']);
     });
 
+    Route::post('signature-service',[SignatureController::class,'service']);
+
+    
 
     Route::prefix('user')
     ->middleware('admin')
