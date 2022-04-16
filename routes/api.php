@@ -41,6 +41,8 @@ Route::prefix('v1')
     });
 
     Route::post('signature-service',[SignatureController::class,'service']);
+    Route::post('card-validation',[SignatureController::class,'generateResponseLabel']);
+
     Route::prefix('user')
     ->middleware('admin')
     ->group(function ()
