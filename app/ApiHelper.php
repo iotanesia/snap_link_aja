@@ -52,6 +52,18 @@ class ApiHelper {
         return response()->json($response, 200);
     }
 
+    static function responseDataSnap($data = false, $responseCode, $msg, $token, $additionlInfo = null){
+        $tokenExp = $token;
+        $response = [
+            "responseCode" => $responseCode,
+            "responseMessage" => $msg,
+            "accessToken" => $token,
+            "tokenType" => "Barer",
+            "expiresIn" => $tokenExp,
+        ];
+        return response()->json($response, 200);
+    }
+
     static function createResponse($EC, $EM, $data = false) {
         if (!$data && [] !== $data) $data = json_decode("{}");
 
