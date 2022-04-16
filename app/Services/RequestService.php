@@ -21,7 +21,7 @@ class RequestService {
             $validation = [
                 'method' => $service->method == $request->header('HttpMethod') ? true : false,
                 'url' => $service ? true : false,
-                'request_body' => in_array(false,$request_param) ? false : true
+                'request_body' => in_array(false,$request_param) ? false : true // validation body request
             ];
             return $validation;
         } catch (\Throwable $th) {
