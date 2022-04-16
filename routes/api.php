@@ -22,6 +22,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('generate-label',[SignatureController::class,'generateResponseLabel']);
+
+
 Route::get('/create-signature',[RSAController::class, 'rsa']);
 Route::get('/verify_rsa',[RSAController::class, 'verify_rsa']);
 Route::get('/verify_rsa_test',[RSAController::class, 'verify_rsa_test']);
