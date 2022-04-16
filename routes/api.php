@@ -30,20 +30,14 @@ Route::get('/verify_rsa_test',[RSAController::class, 'verify_rsa_test']);
 Route::prefix('v1')
 ->namespace('Api')
 ->group(function () {
-
     Route::post('/login',[AuthControler::class,'login']);
-
     Route::post('/signature-auth',[SignatureController::class,'create']);
-
     Route::middleware('signature')->group(function ()
     {
         Route::post('generate-token',[SignatureController::class,'generateToken']);
     });
 
     Route::post('signature-service',[SignatureController::class,'service']);
-
-    
-
     Route::prefix('user')
     ->middleware('admin')
     ->group(function ()
