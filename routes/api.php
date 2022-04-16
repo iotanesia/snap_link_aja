@@ -33,6 +33,7 @@ Route::get('/verify_rsa_test',[RSAController::class, 'verify_rsa_test']);
 Route::prefix('v1')
 ->namespace('Api')
 ->group(function () {
+    Route::post('/signature-validation',[SignatureController::class, 'signatureValidation']);
     Route::post('/login',[AuthControler::class,'login']);
     Route::post('/signature-auth',[SignatureController::class,'create']);
     Route::middleware('signature')->group(function ()

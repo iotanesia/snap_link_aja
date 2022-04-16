@@ -9,6 +9,7 @@ use App\Constants\ErrorCode as EC;
 use App\Constants\ErrorMessage as EM;
 use App\Constants\Snap;
 use App\Exceptions\CustomException;
+use App\Models\ResponseCode;
 use Exception;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Carbon;
@@ -37,7 +38,7 @@ class ApiHelper {
         return response()->json([
             "responseCode" => $statusCode,
             "responseMessage" => $data
-        ], $statusCode);
+        ], substr($statusCode, 0, 3));
     }
 
     static function responseData($data = false){
@@ -52,27 +53,28 @@ class ApiHelper {
         return response()->json($response, 200);
     }
 
-    static function responseDataSnap($data = null, $httpCode = 200, $caseCode, $signature = null, $token = null, $additionlInfo = null){
-        $responseCode = $httpCode.EC::SERVICE_CODE.$caseCode;
+    static function responseDataSnap($httpCodeSlug = 'successful', $signature = null, $token = null, $additionlInfo = null) {
+        $resCode = ResponseCode::where('slug', $httpCodeSlug)->first();
+        $responseCode = $resCode->http_code.EC::SERVICE_CODE.$resCode->case_code;
 
-        if($httpCode == 200) {
+        if($httpCodeSlug == 'successful') {
             $tokenExp = self::decodeJwtSignature($token, $signature);
             $response = [
                 "responseCode" => $responseCode,
-                "responseMessage" => $msg,
+                "responseMessage" => $resCode->description,
                 "accessToken" => $token,
-                "tokenType" => "Barer",
+                "tokenType" => "Bearer",
                 "expiresIn" => $tokenExp->exp,
             ];
 
         } else {
             $response = [
                 "responseCode" => $responseCode,
-                "responseMessage" => $msg,
+                "responseMessage" => $resCode->description,
             ];
         }
 
-        return response()->json($response, $httpCode);
+        return response()->json($response, $resCode->http_code);
     }
 
     static function createResponse($EC, $EM, $data = false) {

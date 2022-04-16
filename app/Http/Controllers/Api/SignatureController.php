@@ -24,9 +24,8 @@ class SignatureController extends Controller
 
     public function generateToken(Request $request)
     {
-        $result = Signature::generateToken($request);
         // return ResponseInterface::resultResponse($result);
-        return ResponseInterface::responseDataSnap(null, 200, 01, $request->header('x-signature'), $result['token']);
+        return ResponseInterface::responseDataSnap('successful', $request->header('x-signature'), Signature::generateToken($request)['token']);
     }
 
     public function service(Request $request)
@@ -40,5 +39,10 @@ class SignatureController extends Controller
     {
         //  dd(ServicesResponseCode::httpCode('successful'));
         dd(ServicesResponseCode::retriveSlug());
+    }
+
+    public function signatureValidation(Request $request)
+    {
+        $data = Signature::verifiedSecondSignature($request);
     }
 }

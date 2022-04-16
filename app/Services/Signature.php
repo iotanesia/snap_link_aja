@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Constants\Snap;
 use Illuminate\Support\Facades\Log;
 use App\ApiHelper as Helper;
+use App\Models\ResponseCode;
+use App\Constants\ErrorCode AS EC;
 use Illuminate\Support\Facades\File;
 
 class Signature {
@@ -39,8 +41,9 @@ class Signature {
     public static function generateToken($request)
     {
         try {
-            if(!$request->grantType) throw new \Exception("Bad Request", 400);
-            if($request->grantType != 'client_credentials') throw new \Exception("Bad Request", 400);
+            
+            if(!$request->grantType) throw new \Exception(ResponseCode::getListBySlug("bad-request")->message, ResponseCode::getListBySlug("bad-request")->http_code.EC::SERVICE_CODE.ResponseCode::getListBySlug("bad-request")->case_code);
+            if($request->grantType != 'client_credentials') throw new \Exception(ResponseCode::getListBySlug("bad-request")->message, ResponseCode::getListBySlug("bad-request")->http_code.EC::SERVICE_CODE.ResponseCode::getListBySlug("bad-request")->case_code);
             Log::info($request->header('x-signature'));
             $signature = $request->header('x-signature');
             $token = Helper::createJwtSignature([
@@ -79,6 +82,16 @@ class Signature {
     public static function generateSecondSignature($request)
     {
         $payload = $request->header('HttpMethod').':'.$request->header('EndpointUrl').':'.$request->header('AccessToken').':'.(string) json_encode($request->all(),true).':'.$request->header('X-TIMESTAMP');
+        return $payload;
+    }
+    
+
+    public static function verifiedSecondSignature($request)
+    {
+        $url = $request->route()->uri;
+        $token = str_replace('Bearer ', '', $request->header('Authorization'));
+        $payload = $request->method().':'.$url.':'.$token.':'.(string) json_encode($request->all(),true).':'.$request->header('X-TIMESTAMP');
+
         return $payload;
     }
 }
