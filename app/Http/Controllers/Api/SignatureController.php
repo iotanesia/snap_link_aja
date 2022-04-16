@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\ApiHelper as ResponseInterface;
 use App\Models\responseCode;
 use App\Services\RequestService;
-use App\Services\ResponseCode as ServicesResponseCode;
+use App\Services\ResponseCode as Http;
 use App\Services\Signature;
 use Illuminate\Support\Str;
 class SignatureController extends Controller
@@ -46,18 +46,17 @@ class SignatureController extends Controller
     public function generateResponseLabel(Request $request)
     {
         try {
-            if(in_array(false,RequestService::validationPayload($request))) throw new \Exception("Error Processing Request", 1);
-
+            if(in_array(false,RequestService::validationPayload($request))) throw new \Exception("Not true", 1);
             return ResponseInterface::resultResponse(
-                $request->all()
+                [
+                    'responseCode' => Http::code('successful'),
+                    'responseMessage' => Http::message('successful'),
+                    'data' => $request->all()
+                ]
             );
-            
-            // dd(RequestService::validationPayload($request));
         } catch (\Throwable $th) {
             throw $th;
         }
-        // dd(ServicesResponseCode::retriveSlug());
-        // dd(Signature::verifiedSecondSignature($request));
     }
 
     public function signatureValidation(Request $request)

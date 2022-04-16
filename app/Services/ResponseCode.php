@@ -17,6 +17,16 @@ class ResponseCode {
         });
     }
 
+    public static function code($slug)
+    {
+        $key = "response code data {$slug}";
+        return Helper::storageCache($key,function () use ($slug){
+            $result = Model::where('slug',$slug)->first();
+            return $result ? $result->http_code.$result->service_code.$result->case_code : null;
+        });
+
+    }
+
     public static function httpCode($slug)
     {
         $key = "response http code {$slug}";
