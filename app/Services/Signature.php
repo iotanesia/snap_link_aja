@@ -40,6 +40,7 @@ class Signature {
     public static function generateToken($request)
     {
         try {
+            //dd($request);
             if(!$request->grantType) throw new \Exception("Bad Request", 400);
             if($request->grantType != 'client_credentials') throw new \Exception("Bad Request", 400);
             Log::info($request->header('x-signature'));
@@ -67,14 +68,13 @@ class Signature {
             ]);
             $payload = self::generateSecondSignature($request);
             $hmacs = hash_hmac('sha512', $payload, $request->header('x-client-secret'));
-            $hmac = sprintf('%02x', $hmacs);
             // dd($payload);
             return [
                 'signature' => $signature,
                 'token' => $token,
                 'token_is_verified' => Helper::decodeJwtSignature($token,$signature) ? true : false,
                 'payload' => $payload,
-                'hmac' => $hmac,
+                'hmac' => $hmacs,
             ];
         } catch (\Throwable $th) {
             throw $th;
@@ -84,7 +84,7 @@ class Signature {
     public static function generateSecondSignature($request)
     {
         try {
-            $payload = $request->header('HttpMethod').':'.$request->header('EndpointUrl').':'.$request->header('AccessToken').':'.(string) json_encode($request->all(),true).':'.$request->header('X-TIMESTAMP').':';
+            $payload = $request->header('HttpMethod').':'.$request->header('EndpointUrl').':'.$request->header('AccessToken').':'.(string) json_encode($request->all(),true).':'.$request->header('X-TIMESTAMP');
             return $payload;
 
         } catch (\Throwable $th) {
