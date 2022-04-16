@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\ApiHelper as ResponseInterface;
+use App\Models\responseCode;
+use App\Services\ResponseCode as ServicesResponseCode;
 use App\Services\Signature;
+use Illuminate\Support\Str;
 class SignatureController extends Controller
 {
     public function create(Request $request)
@@ -31,5 +34,11 @@ class SignatureController extends Controller
         return ResponseInterface::resultResponse(
             Signature::getSignatureService($request)
         );
+    }
+
+    public function generateResponseLabel(Request $request)
+    {
+        //  dd(ServicesResponseCode::httpCode('successful'));
+        dd(ServicesResponseCode::retriveSlug());
     }
 }
