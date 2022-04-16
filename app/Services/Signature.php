@@ -13,6 +13,7 @@ class Signature {
 
     public static function create($request)
     {
+        
         try {
             $date = Carbon::now()->toIso8601String();
             $private_key = Storage::get('private.key');
@@ -29,10 +30,9 @@ class Signature {
 
     public static function verified($request)
     {
-        $createSignature = self::create($request);
-        $timeStampIso = Carbon::now()->toIso8601String();
+        $timeStampIso = $request->header('x-timestamp');
         $plaintext = $timeStampIso."|".$request->header('X-CLIENT-KEY');
-        $signature = $createSignature['signature'];
+        $signature = $request->header('x-signature');
         $pubkeyid = Storage::get('public.key');
         return openssl_verify($plaintext, base64_decode($signature), $pubkeyid, Snap::RSA_TYPE);
     }
