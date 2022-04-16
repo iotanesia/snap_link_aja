@@ -17,7 +17,7 @@ class RequestServiceSeeder extends Seeder
         RequestService::truncate();
         RequestService::insert([
             [
-                'url' => '/openapi/v1/card-validation',
+                'url' => '/api/v1/card-validation',
                 'method' => 'POST',
                 'request_body' => json_encode([
                     'cardNo' => null,

@@ -11,7 +11,7 @@ class RequestService {
     public static function validationPayload($request)
     {
         try {
-            $service = Model::where('url',$request->header('EndpointUrl'))->first();
+            $service = Model::where('url',$request->getRequestUri())->first();
             $requestBody = json_decode($service->request_body,true);
             $request_param = [];
             foreach ($requestBody as $param => $val) {
@@ -19,9 +19,9 @@ class RequestService {
             }
             if(!$service) throw new \Exception("endpoint not found", 400);
             $validation = [
-                'method' => $service->method == $request->header('HttpMethod') ? true : false,
+                'method' => $service->method == $request->getMethod() ? true : false,
                 'url' => $service ? true : false,
-                'request_body' => in_array(false,$request_param) ? false : true
+                'request_body' => in_array(false,$request_param) ? false : true // validation body request
             ];
             return $validation;
         } catch (\Throwable $th) {
