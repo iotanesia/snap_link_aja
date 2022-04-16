@@ -94,4 +94,19 @@ class Signature {
 
         return $payload;
     }
+    public static function cardValidation($request)
+    {
+        try {
+            if(!$request->header('method')) throw new \Exception("Bad Request", 400);
+            if(!$request->header('endpoint')) throw new \Exception("Bad Request", 400);
+            if(!$request->header('x-client-secret')) throw new \Exception("Bad Request", 400);
+            if(!$request->header('x-timestamp')) throw new \Exception("Bad Request", 400);
+
+            
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
 }

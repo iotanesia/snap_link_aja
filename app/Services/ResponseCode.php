@@ -9,8 +9,11 @@ class ResponseCode {
 
     public static function retriveSlug()
     {
-        return Model::get()->map(function ($item){
-            return $item->slug;
+        $key = "response retrive";
+        return Helper::storageCache($key,function () {
+            return Model::get()->map(function ($item){
+                return $item->slug;
+            });
         });
     }
 
