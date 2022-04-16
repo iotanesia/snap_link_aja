@@ -52,16 +52,27 @@ class ApiHelper {
         return response()->json($response, 200);
     }
 
-    static function responseDataSnap($data = false, $responseCode, $msg, $token, $additionlInfo = null){
-        $tokenExp = $token;
-        $response = [
-            "responseCode" => $responseCode,
-            "responseMessage" => $msg,
-            "accessToken" => $token,
-            "tokenType" => "Barer",
-            "expiresIn" => $tokenExp,
-        ];
-        return response()->json($response, 200);
+    static function responseDataSnap($data = null, $httpCode = 200, $caseCode, $signature = null, $token = null, $additionlInfo = null){
+        $responseCode = $httpCode.EC::SERVICE_CODE.$caseCode;
+
+        if($httpCode == 200) {
+            $tokenExp = self::decodeJwtSignature($token, $signature);
+            $response = [
+                "responseCode" => $responseCode,
+                "responseMessage" => $msg,
+                "accessToken" => $token,
+                "tokenType" => "Barer",
+                "expiresIn" => $tokenExp->exp,
+            ];
+
+        } else {
+            $response = [
+                "responseCode" => $responseCode,
+                "responseMessage" => $msg,
+            ];
+        }
+
+        return response()->json($response, $httpCode);
     }
 
     static function createResponse($EC, $EM, $data = false) {

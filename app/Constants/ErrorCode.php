@@ -27,5 +27,6 @@ class ErrorCode
     const RESOURCE_NOT_FOUND = 118;
     const EXPIRED_SESSION = 119;
     const INVALID_APIKEY = 120;
+    const SERVICE_CODE = 00;
 }
 

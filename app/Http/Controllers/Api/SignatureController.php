@@ -21,9 +21,9 @@ class SignatureController extends Controller
 
     public function generateToken(Request $request)
     {
-        return ResponseInterface::resultResponse(
-            Signature::generateToken($request)
-        );
+        $result = Signature::generateToken($request);
+        // return ResponseInterface::resultResponse($result);
+        return ResponseInterface::responseDataSnap(null, 200, 01, $request->header('x-signature'), $result['token']);
     }
 
     public function service(Request $request)
