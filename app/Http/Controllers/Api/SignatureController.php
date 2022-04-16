@@ -45,9 +45,19 @@ class SignatureController extends Controller
 
     public function generateResponseLabel(Request $request)
     {
-        // dd(RequestService::validationPayload($request));
+        try {
+            if(in_array(false,RequestService::validationPayload($request))) throw new \Exception("Error Processing Request", 1);
+
+            return ResponseInterface::resultResponse(
+                $request->all()
+            );
+            
+            // dd(RequestService::validationPayload($request));
+        } catch (\Throwable $th) {
+            throw $th;
+        }
         // dd(ServicesResponseCode::retriveSlug());
-        dd(Signature::verifiedSecondSignature($request));
+        // dd(Signature::verifiedSecondSignature($request));
     }
 
     public function signatureValidation(Request $request)
