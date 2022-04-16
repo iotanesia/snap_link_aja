@@ -21,7 +21,6 @@ class Signature {
             Log::info("plaintext: ".$plaintext);
             $binary_signature="";
             openssl_sign($plaintext, $binary_signature, $private_key, Snap::RSA_TYPE);
-
             return ['signature' => base64_encode($binary_signature), 'x_timestamp' => $date];
         } catch (\Throwable $th) {
             throw $th;
@@ -40,16 +39,13 @@ class Signature {
     public static function generateToken($request)
     {
         try {
-            //dd($request);
             if(!$request->grantType) throw new \Exception("Bad Request", 400);
             if($request->grantType != 'client_credentials') throw new \Exception("Bad Request", 400);
             Log::info($request->header('x-signature'));
-
             $signature = $request->header('x-signature');
             $token = Helper::createJwtSignature([
                 'signature' => $signature
             ]);
-
             return [
                 'token' => $token,
                 'token_is_verified' => Helper::decodeJwtSignature($token,$signature) ? true : false,
@@ -68,7 +64,6 @@ class Signature {
             ]);
             $payload = self::generateSecondSignature($request);
             $hmacs = hash_hmac('sha512', $payload, $request->header('x-client-secret'));
-            // dd($payload);
             return [
                 'signature' => $signature,
                 'token' => $token,
@@ -83,13 +78,8 @@ class Signature {
 
     public static function generateSecondSignature($request)
     {
-        try {
-            $payload = $request->header('HttpMethod').':'.$request->header('EndpointUrl').':'.$request->header('AccessToken').':'.(string) json_encode($request->all(),true).':'.$request->header('X-TIMESTAMP');
-            return $payload;
-
-        } catch (\Throwable $th) {
-            throw $th;
-        }
+        $payload = $request->header('HttpMethod').':'.$request->header('EndpointUrl').':'.$request->header('AccessToken').':'.(string) json_encode($request->all(),true).':'.$request->header('X-TIMESTAMP');
+        return $payload;
     }
 
 }
