@@ -42,11 +42,11 @@ class SignatureController extends Controller
             Signature::cardValidation($request)
         );
     }
-    
+
     public function generateResponseLabel(Request $request)
     {
-        dd(RequestService::validationPayload($request));
-        dd(ServicesResponseCode::retriveSlug());
+        // dd(RequestService::validationPayload($request));
+        // dd(ServicesResponseCode::retriveSlug());
         dd(Signature::verifiedSecondSignature($request));
     }
 

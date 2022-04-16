@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\ApiHelper as Helper;
 use App\Models\RequestService as Model;
-
+use App\Services\Signature;
 
 class RequestService {
 
@@ -21,7 +21,8 @@ class RequestService {
             $validation = [
                 'method' => $service->method == $request->getMethod() ? true : false,
                 'url' => $service ? true : false,
-                'request_body' => in_array(false,$request_param) ? false : true // validation body request
+                'request_body' => in_array(false,$request_param) ? false : true, // validation body request
+                'signature' => Signature::verifiedSecondSignature($request)
             ];
             return $validation;
         } catch (\Throwable $th) {

@@ -41,7 +41,7 @@ class Signature {
     public static function generateToken($request)
     {
         try {
-            
+
             if(!$request->grantType) throw new \Exception(ResponseCode::getListBySlug("bad-request")->message, ResponseCode::getListBySlug("bad-request")->http_code.EC::SERVICE_CODE.ResponseCode::getListBySlug("bad-request")->case_code);
             if($request->grantType != 'client_credentials') throw new \Exception(ResponseCode::getListBySlug("bad-request")->message, ResponseCode::getListBySlug("bad-request")->http_code.EC::SERVICE_CODE.ResponseCode::getListBySlug("bad-request")->case_code);
             Log::info($request->header('x-signature'));
@@ -84,18 +84,15 @@ class Signature {
         $payload = $request->header('HttpMethod').':'.$request->header('EndpointUrl').':'.$request->header('AccessToken').':'.(string) json_encode($request->all(),true).':'.$request->header('X-TIMESTAMP');
         return $payload;
     }
-    
+
 
     public static function verifiedSecondSignature($request)
     {
         $url = $request->getRequestUri();
-        $token = str_replace('Bearer ', '', $request->header('Authorization'));
+        $token = $request->bearerToken();
         $payload = $request->method().':'.$url.':'.$token.':'.(string) json_encode($request->all(),true).':'.$request->header('X-TIMESTAMP');
         $hmacs = hash_hmac('sha512', $payload, Snap::CLIENT_SECRET);
-
-        dd($hmacs);
-
-        return $payload;
+        return $request->header('X-SIGNATURE') == $hmacs ? true : false;
     }
     public static function cardValidation($request)
     {
@@ -105,7 +102,7 @@ class Signature {
             if(!$request->header('x-client-secret')) throw new \Exception("Bad Request", 400);
             if(!$request->header('x-timestamp')) throw new \Exception("Bad Request", 400);
 
-            
+
 
         } catch (\Throwable $th) {
             throw $th;
