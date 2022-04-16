@@ -13,7 +13,7 @@ class Signature {
 
     public static function create($request)
     {
-        
+
         try {
             $date = Carbon::now()->toIso8601String();
             $private_key = Storage::get('private.key');
@@ -40,6 +40,7 @@ class Signature {
     public static function generateToken($request)
     {
         try {
+            //dd($request);
             if(!$request->grantType) throw new \Exception("Bad Request", 400);
             if($request->grantType != 'client_credentials') throw new \Exception("Bad Request", 400);
             Log::info($request->header('x-signature'));
@@ -65,22 +66,25 @@ class Signature {
             $token = Helper::createJwtSignature([
                 'signature' => $signature
             ]);
-            $payload = self::generateSecondSignature($request, json_encode($request->all(),true));
-            $bodyHex = Helper::strToHex(json_encode($request->all(),true));
-            $payloadHex = self::generateSecondSignature($request, $bodyHex);
-            $hmac = hash_hmac('sha512', $payloadHex, $request->header('x-client-secret'));
+            $payload = self::generateSecondSignature($request);
+            $hmacs = hash_hmac('sha512', $payload, $request->header('x-client-secret'));
+            // dd($payload);
             return [
-                'signature_service' => $hmac,
+                'signature' => $signature,
+                'token' => $token,
+                'token_is_verified' => Helper::decodeJwtSignature($token,$signature) ? true : false,
+                'payload' => $payload,
+                'hmac' => $hmacs,
             ];
         } catch (\Throwable $th) {
             throw $th;
         }
     }
 
-    public static function generateSecondSignature($request, $body)
+    public static function generateSecondSignature($request)
     {
         try {
-            $payload = $request->header('HttpMethod').':'.$request->header('EndpointUrl').':'.$request->header('AccessToken').':'.(string) $body.':'.$request->header('X-TIMESTAMP').':';
+            $payload = $request->header('HttpMethod').':'.$request->header('EndpointUrl').':'.$request->header('AccessToken').':'.(string) json_encode($request->all(),true).':'.$request->header('X-TIMESTAMP');
             return $payload;
 
         } catch (\Throwable $th) {

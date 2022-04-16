@@ -11,6 +11,7 @@ use App\ApiHelper;
 
 class RSAController extends Controller
 {
+    //mitra link aja
     public function rsa()
     {
         date_default_timezone_set('Asia/Jakarta');
@@ -26,13 +27,14 @@ class RSAController extends Controller
             // print(base64_encode($binary_signature) ."\n");
             // print($plaintext);
 
-            return base64_encode($binary_signature);
+           // return base64_encode($binary_signature);
 
         } catch (\Throwable $th) {
             throw $th;
         }
     }
 
+    //link aja
     public function verify_rsa(Request $request) {
         // $signature = self::rsa();
         // $timeStampIso = $request->header('X-TIMESTAMP');
@@ -47,7 +49,7 @@ class RSAController extends Controller
             // dd(true);
             $token = ApiHelper::createJwt($request->all());
             return ApiHelper::responseData($token);
-            
+
         } else {
             // $token = ApiHelper::createJwt($request->all());
             dd(false);
@@ -73,7 +75,7 @@ class RSAController extends Controller
 
         if($test) {
             dd(true);
-            
+
         } else {
             dd(false);
         }
