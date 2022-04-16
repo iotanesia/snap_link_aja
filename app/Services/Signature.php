@@ -88,9 +88,12 @@ class Signature {
 
     public static function verifiedSecondSignature($request)
     {
-        $url = $request->route()->uri;
+        $url = $request->getRequestUri();
         $token = str_replace('Bearer ', '', $request->header('Authorization'));
         $payload = $request->method().':'.$url.':'.$token.':'.(string) json_encode($request->all(),true).':'.$request->header('X-TIMESTAMP');
+        $hmacs = hash_hmac('sha512', $payload, Snap::CLIENT_SECRET);
+
+        dd($hmacs);
 
         return $payload;
     }
