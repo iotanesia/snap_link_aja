@@ -84,20 +84,21 @@ class Handler extends ExceptionHandler
     private function handleApiException($request, \Exception $exception)
     {
 
-        // $headers = [
-        //     'Access-Control-Allow-Origin'      => '*',
-        //     'Access-Control-Allow-Methods'     => 'HEAD, POST, GET, OPTIONS, PUT, DELETE',
-        //     'Access-Control-Allow-Credentials' => 'true',
-        //     'Access-Control-Max-Age'           => '86400',
-        //     'Access-Control-Allow-Headers'     => 'X-Requested-With, Content-Type, Accept, Origin, Authorization, APIKey, Timestamp, AccessToken'
-        // ];
+        $headers = [
+            'Access-Control-Allow-Origin'      => '*',
+            'Access-Control-Allow-Methods'     => 'HEAD, POST, GET, OPTIONS, PUT, DELETE',
+            'Access-Control-Allow-Credentials' => 'true',
+            'Access-Control-Max-Age'           => '86400',
+            'Access-Control-Allow-Headers'     => 'X-Requested-With, Content-Type, Accept, Origin, Authorization, APIKey, Timestamp, AccessToken'
+        ];
 
         $code = $this->error_code();
         $statusCode = $exception->getCode() ?? 500;
         self::generateReport($exception,$code);
         return ResponseInterface::createErrorResponse(
             $exception->getMessage()
-            ,$statusCode
+            ,$statusCode,
+            $headers
         );
     }
 
