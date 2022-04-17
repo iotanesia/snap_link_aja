@@ -18,43 +18,17 @@ return [
     // 'paths' => ['api/*', 'sanctum/csrf-cookie'],
     'paths' => ['api/*'],
 
-    'allowed_methods' => [
-        'POST',
-        'GET',
-        'PUT',
-        'DELETE',
-    ],
+    'allowed_methods' => ['*'],
 
-
-    'allowed_origins' => ['https://apidevportal.bi.go.id'],
+    'allowed_origins' => ['*'],
 
     'allowed_origins_patterns' => [],
 
-    // 'allowed_headers' => ['*'],
-    'allowed_headers' => [
-        'X-TIMESTAMP',
-        'X-CLIENT-KEY',
-        'X-CLIENT-SECRET',
-        'Content-Type',
-        'X-SIGNATURE',
-        'Accept',
-        'Authorization',
-        'Authorization-Customer',
-        'ORIGIN',
-        'origin',
-        'X-PARTNER-ID',
-        'X-EXTERNAL-ID',
-        'X-IP-ADDRESS',
-        'X-DEVICE-ID',
-        'CHANNEL-ID',
-        'X-LATITUDE',
-        'X-LONGITUDE'
-    ],
-
+    'allowed_headers' => ['*'],
 
     'exposed_headers' => [],
 
-    'max_age' => 60 * 60 * 24,
+    'max_age' => 0,
 
     'supports_credentials' => false,
 
