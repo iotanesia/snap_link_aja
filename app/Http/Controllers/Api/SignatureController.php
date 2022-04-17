@@ -54,6 +54,7 @@ class SignatureController extends Controller
     public function cardValidation(Request $request)
     {
         try {
+            $addObj = new stdClass;
             //   dd($request->getContent());
 
             // if(!$request->header('channel-id')) throw new \Exception(
@@ -76,6 +77,7 @@ class SignatureController extends Controller
                 [
                     'responseCode' => Http::code('successful'),
                     'responseMessage' => Http::message('successful'),
+                    'additionalInfo' => $addObj,
                     // 'data' => $request->all()
                     'data' => json_decode(json_decode($request->getContent(), false), false)
                 ]
