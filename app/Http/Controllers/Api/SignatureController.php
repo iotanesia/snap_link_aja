@@ -109,7 +109,8 @@ class SignatureController extends Controller
                     'responseCode' => Http::code('successful'),
                     'responseMessage' => Http::message('successful'),
                     'referenceNo' => 'bdf4ed26e4ed43118e8e73ddc0115f6e',
-                    'partnerReferenceNo' => '2020102900000000000001'
+                    'partnerReferenceNo' => '2020102900000000000001',
+                    'additionalInfo' => []
                     // 'data' => $request->all()
                     // 'data' => json_decode(json_decode($request->getContent(), false), false)
                 ]
