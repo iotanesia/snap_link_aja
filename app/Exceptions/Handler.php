@@ -73,11 +73,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        // if ($request->header('content-type') == 'application/json') {
-        //     return $this->handleApiException($request, $exception);
-        // }else {
+        if ($request->header('content-type') == 'application/json') {
+            return $this->handleApiException($request, $exception);
+        }else {
             $retval = parent::render($request, $exception);
-        // }
+        }
         return $retval;
     }
 
