@@ -35,11 +35,12 @@ class ApiHelper {
         return response()->json($data, $statusCode);
     }
 
-    static function _erorrResponse($data,$statusCode = 200){
+    static function createErrorResponse($data,$statusCode = 400){
+        $code = ResponseCode::codeByMessage($data);
         return response()->json([
-            "responseCode" => $statusCode,
+            "responseCode" => $code ?? $statusCode,
             "responseMessage" => $data
-        ], substr($statusCode, 0, 3));
+        ],$statusCode);
     }
 
     static function responseData($data = false){

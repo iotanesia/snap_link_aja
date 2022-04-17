@@ -83,11 +83,12 @@ class Handler extends ExceptionHandler
 
     private function handleApiException($request, \Exception $exception)
     {
+        // dd($exception->getMessage());
         $code = $this->error_code();
         $statusCode = $exception->getCode() ?? 500;
         self::generateReport($exception,$code);
-        return ResponseInterface::_erorrResponse(
-            $exception->getMessage() == "" ? $exception->getTraceAsString() : $exception->getMessage()
+        return ResponseInterface::createErrorResponse(
+            $exception->getMessage()
             ,$statusCode
         );
     }

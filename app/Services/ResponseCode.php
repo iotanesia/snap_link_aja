@@ -73,4 +73,13 @@ class ResponseCode {
         });
     }
 
+    public static function codeByMessage($message)
+    {
+        $key = "response by request message {$message}";
+        return Helper::storageCache($key,function () use ($message){
+            $result = Model::where('message',$message)->first();
+            return $result ? $result->http_code.$result->service_code.$result->case_code : null;
+        });
+    }
+
 }

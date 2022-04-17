@@ -24,26 +24,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('generate-label',[SignatureController::class,'generateResponseLabel']);
 
-
-Route::get('/create-signature',[RSAController::class, 'rsa']);
-Route::get('/verify_rsa',[RSAController::class, 'verify_rsa']);
-Route::get('/verify_rsa_test',[RSAController::class, 'verify_rsa_test']);
-
 //with middleware
 Route::prefix('v1')
 ->namespace('Api')
 ->group(function () {
-    Route::post('/signature-validation',[SignatureController::class, 'signatureValidation']);
     Route::post('/login',[AuthControler::class,'login']);
-    Route::post('/signature-auth',[SignatureController::class,'create']);
-    Route::middleware('signature')->group(function ()
-    {
-        Route::post('generate-token',[SignatureController::class,'generateToken']);
-    });
-
-    Route::post('signature-service',[SignatureController::class,'service']);
-    Route::post('card-validation',[SignatureController::class,'generateResponseLabel']);
-
     Route::prefix('user')
     ->middleware('admin')
     ->group(function ()
@@ -55,5 +40,16 @@ Route::prefix('v1')
         Route::delete('/{id}',[UserControler::class,'delete']);
 
     });
+
+    Route::post('/signature-auth',[SignatureController::class,'create']);
+    Route::middleware('signature')->group(function ()
+    {
+        Route::post('generate-token',[SignatureController::class,'generateToken']);
+    });
+
+    Route::post('signature-service',[SignatureController::class,'service']);
+    Route::post('card-validation',[SignatureController::class,'cardValidation']);
+
+
 });
 
