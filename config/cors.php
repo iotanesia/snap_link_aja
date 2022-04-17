@@ -27,11 +27,31 @@ return [
         'DELETE',
     ],
 
-    'allowed_origins' => ['*'],
+
+    'allowed_origins' => ['https://apidevportal.bi.go.id'],
 
     'allowed_origins_patterns' => [],
 
     'allowed_headers' => ['*'],
+    // 'allowed_headers' => [
+    //     'X-TIMESTAMP',
+    //     'X-CLIENT-KEY',
+    //     'X-CLIENT-SECRET',
+    //     'Content-Type',
+    //     'X-SIGNATURE',
+    //     'Accept',
+    //     'Authorization',
+    //     'Authorization-Customer',
+    //     'ORIGIN',
+    //     'X-PARTNER-ID',
+    //     'X-EXTERNAL-ID',
+    //     'X-IP-ADDRESS',
+    //     'X-DEVICE-ID',
+    //     'CHANNEL-ID',
+    //     'X-LATITUDE',
+    //     'X-LONGITUDE'
+    // ],
+
 
     'exposed_headers' => [],
 
