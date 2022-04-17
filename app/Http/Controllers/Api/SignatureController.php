@@ -32,9 +32,10 @@ class SignatureController extends Controller
             [
                 'responseCode' => Http::code('successful'),
                 'responseMessage' => Http::message('successful'),
-                "accessToken" => $token,
-                "tokenType" => "Bearer",
-                "expiresIn" => ResponseInterface::decodeJwtSignature($token,$request->header('x-signature'))->exp ?? null,
+                'accessToken' => $token,
+                'tokenType' => 'Bearer',
+                'expiresIn' => (string) ResponseInterface::decodeJwtSignature($token,$request->header('x-signature'))->exp ?? null,
+                'additionalinfo' => null
             ]
         );
     }
