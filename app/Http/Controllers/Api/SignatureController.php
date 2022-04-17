@@ -74,7 +74,8 @@ class SignatureController extends Controller
                 [
                     'responseCode' => Http::code('successful'),
                     'responseMessage' => Http::message('successful'),
-                    'data' => $request->all()
+                    // 'data' => $request->all()
+                    'data' => json_decode(json_decode($request->getContent(), false), false)
                 ]
             );
         } catch (\Throwable $th) {
