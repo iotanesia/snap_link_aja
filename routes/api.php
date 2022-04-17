@@ -49,7 +49,7 @@ Route::prefix('v1')
 
     Route::post('signature-service',[SignatureController::class,'service']);
     Route::post('card-validation',[SignatureController::class,'cardValidation']);
-    Route::post('registration​/card-bind-limit',[SignatureController::class,'cardValidation']);
+    Route::post('registration/card-bind-limit',[SignatureController::class,'cardValidation']);
 
 
 });

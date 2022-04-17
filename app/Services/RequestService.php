@@ -25,6 +25,7 @@ class RequestService {
                 'request_body' => true, // validation body request
                 'signature' => Signature::verifiedSecondSignature($request)
             ];
+            // dd($validation);
             return $validation;
         } catch (\Throwable $th) {
             throw $th;
