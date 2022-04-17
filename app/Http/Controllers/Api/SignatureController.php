@@ -11,6 +11,8 @@ use App\Services\ResponseCode as Http;
 use App\Services\ResponseCode as ServicesResponseCode;
 use App\Services\Signature;
 use Illuminate\Support\Str;
+use stdClass;
+
 class SignatureController extends Controller
 {
     // mitra
@@ -86,6 +88,7 @@ class SignatureController extends Controller
     public function cardBindLimit(Request $request)
     {
         try {
+            $addObj = new stdClass;
             //   dd($request->getContent());
 
             // if(!$request->header('channel-id')) throw new \Exception(
@@ -110,7 +113,7 @@ class SignatureController extends Controller
                     'responseMessage' => Http::message('successful'),
                     'referenceNo' => 'bdf4ed26e4ed43118e8e73ddc0115f6e',
                     'partnerReferenceNo' => '2020102900000000000001',
-                    'additionalInfo' => []
+                    'additionalInfo' => $addObj
                     // 'data' => $request->all()
                     // 'data' => json_decode(json_decode($request->getContent(), false), false)
                 ]
