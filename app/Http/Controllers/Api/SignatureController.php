@@ -51,18 +51,18 @@ class SignatureController extends Controller
     public function cardValidation(Request $request)
     {
         try {
-            if(!$request->header('channel-id')) throw new \Exception(
-                ServicesResponseCode::message('invalid-mandatory-field-field-name'),
-                ServicesResponseCode::httpCode('invalid-mandatory-field-field-name')
-            );
-            if(!$request->header('x-external-id')) throw new \Exception(
-                ServicesResponseCode::message('invalid-mandatory-field-field-name'),
-                ServicesResponseCode::httpCode('invalid-mandatory-field-field-name')
-            );
-            if(!$request->header('x-partner-id')) throw new \Exception(
-                ServicesResponseCode::message('invalid-mandatory-field-field-name'),
-                ServicesResponseCode::httpCode('invalid-mandatory-field-field-name')
-            );
+            // if(!$request->header('channel-id')) throw new \Exception(
+            //     ServicesResponseCode::message('invalid-mandatory-field-field-name'),
+            //     ServicesResponseCode::httpCode('invalid-mandatory-field-field-name')
+            // );
+            // if(!$request->header('x-external-id')) throw new \Exception(
+            //     ServicesResponseCode::message('invalid-mandatory-field-field-name'),
+            //     ServicesResponseCode::httpCode('invalid-mandatory-field-field-name')
+            // );
+            // if(!$request->header('x-partner-id')) throw new \Exception(
+            //     ServicesResponseCode::message('invalid-mandatory-field-field-name'),
+            //     ServicesResponseCode::httpCode('invalid-mandatory-field-field-name')
+            // );
             if(in_array(false,RequestService::validationPayload($request))) throw new \Exception(
                 ServicesResponseCode::message('unauthorized-reason'),
                 ServicesResponseCode::httpCode('unauthorized-reason')
