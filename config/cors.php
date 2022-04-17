@@ -43,6 +43,7 @@ return [
         'Authorization',
         'Authorization-Customer',
         'ORIGIN',
+        'origin',
         'X-PARTNER-ID',
         'X-EXTERNAL-ID',
         'X-IP-ADDRESS',
