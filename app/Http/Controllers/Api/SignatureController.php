@@ -8,10 +8,12 @@ use App\ApiHelper as ResponseInterface;
 use App\Models\responseCode;
 use App\Services\RequestService;
 use App\Services\ResponseCode as Http;
+use App\Services\ResponseCode as ServicesResponseCode;
 use App\Services\Signature;
 use Illuminate\Support\Str;
 class SignatureController extends Controller
 {
+    // mitra
     public function create(Request $request)
     {
         try {
@@ -25,10 +27,19 @@ class SignatureController extends Controller
 
     public function generateToken(Request $request)
     {
-        // return ResponseInterface::resultResponse($result);
-        return ResponseInterface::responseDataSnap('successful', $request->header('x-signature'), Signature::generateToken($request)['token']);
+        $token =  Signature::generateToken($request)['token'];
+        return ResponseInterface::resultResponse(
+            [
+                'responseCode' => Http::code('successful'),
+                'responseMessage' => Http::message('successful'),
+                "accessToken" => $token,
+                "tokenType" => "Bearer",
+                "expiresIn" => ResponseInterface::decodeJwtSignature($token,$request->header('x-signature'))->exp ?? null,
+            ]
+        );
     }
 
+    // mitra
     public function service(Request $request)
     {
         return ResponseInterface::resultResponse(
@@ -36,17 +47,14 @@ class SignatureController extends Controller
         );
     }
 
+
     public function cardValidation(Request $request)
     {
-        return ResponseInterface::resultResponse(
-            Signature::cardValidation($request)
-        );
-    }
-
-    public function generateResponseLabel(Request $request)
-    {
         try {
-            if(in_array(false,RequestService::validationPayload($request))) throw new \Exception("Not true", 1);
+            if(in_array(false,RequestService::validationPayload($request))) throw new \Exception(
+                ServicesResponseCode::message('unauthorized-reason'),
+                ServicesResponseCode::httpCode('unauthorized-reason')
+            );
             return ResponseInterface::resultResponse(
                 [
                     'responseCode' => Http::code('successful'),
@@ -59,8 +67,4 @@ class SignatureController extends Controller
         }
     }
 
-    public function signatureValidation(Request $request)
-    {
-        $data = Signature::verifiedSecondSignature($request);
-    }
 }
