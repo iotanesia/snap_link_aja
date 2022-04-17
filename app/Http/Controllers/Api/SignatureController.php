@@ -83,4 +83,40 @@ class SignatureController extends Controller
         }
     }
 
+    public function cardBindLimit(Request $request)
+    {
+        try {
+            //   dd($request->getContent());
+
+            // if(!$request->header('channel-id')) throw new \Exception(
+            //     ServicesResponseCode::message('invalid-mandatory-field-field-name'),
+            //     ServicesResponseCode::httpCode('invalid-mandatory-field-field-name')
+            // );
+            // if(!$request->header('x-external-id')) throw new \Exception(
+            //     ServicesResponseCode::message('invalid-mandatory-field-field-name'),
+            //     ServicesResponseCode::httpCode('invalid-mandatory-field-field-name')
+            // );
+            // if(!$request->header('x-partner-id')) throw new \Exception(
+            //     ServicesResponseCode::message('invalid-mandatory-field-field-name'),
+            //     ServicesResponseCode::httpCode('invalid-mandatory-field-field-name')
+            // );
+            if(in_array(false,RequestService::validationPayload($request))) throw new \Exception(
+                ServicesResponseCode::message('unauthorized-reason'),
+                ServicesResponseCode::httpCode('unauthorized-reason')
+            );
+            return ResponseInterface::resultResponse(
+                [
+                    'responseCode' => Http::code('successful'),
+                    'responseMessage' => Http::message('successful'),
+                    'referenceNo' => 'bdf4ed26e4ed43118e8e73ddc0115f6e',
+                    'partnerReferenceNo' => '2020102900000000000001'
+                    // 'data' => $request->all()
+                    // 'data' => json_decode(json_decode($request->getContent(), false), false)
+                ]
+            );
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
 }
