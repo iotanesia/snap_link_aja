@@ -81,7 +81,8 @@ class Signature {
 
     public static function generateSecondSignature($request)
     {
-        $payload = $request->header('HttpMethod').':'.$request->header('EndpointUrl').':'.$request->header('AccessToken').':'.(string) json_encode($request->all(),true).':'.$request->header('X-TIMESTAMP');
+        $body = json_decode(json_decode($request->getContent(), false), false);
+        $payload = $request->header('HttpMethod').':'.$request->header('EndpointUrl').':'.$request->header('AccessToken').':'.(string) json_encode($body,false).':'.$request->header('X-TIMESTAMP');
         return $payload;
     }
 
@@ -93,6 +94,7 @@ class Signature {
         $token = $request->bearerToken();
         $payload = $request->method().':'.$url.':'.$token.':'.(string) json_encode($body).':'.$request->header('X-TIMESTAMP');
         $hmacs = hash_hmac('sha512', $payload, Snap::CLIENT_SECRET);
+        // dd($hmacs);
         return $request->header('X-SIGNATURE') == $hmacs ? true : false;
     }
     public static function cardValidation($request)
