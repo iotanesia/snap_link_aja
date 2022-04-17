@@ -55,10 +55,7 @@ class ApiHelper {
     }
 
     static function responseDataSnap($httpCodeSlug = 'successful', $signature = null, $token = null, $additionlInfo = null) {
-        // $resCode = ResponseCode::where('slug', $httpCodeSlug)->first();
-        // $resCode = ResponseCode::where('slug', $httpCodeSlug)->first();
         $responseCode = ResponseCode::httpCode($httpCodeSlug).EC::SERVICE_CODE.ResponseCode::caseCode($httpCodeSlug);
-
         if($httpCodeSlug == 'successful') {
             $tokenExp = self::decodeJwtSignature($token, $signature);
             $response = [
