@@ -32,7 +32,15 @@ class ApiHelper {
     }
 
     static function resultResponse($data,$statusCode = 200){
-        return response()->json($data, $statusCode);
+        $headers = [
+            'Access-Control-Allow-Origin'      => '*',
+            'Access-Control-Allow-Methods'     => 'HEAD, POST, GET, OPTIONS, PUT, DELETE',
+            'Access-Control-Allow-Credentials' => 'true',
+            'Access-Control-Max-Age'           => '86400',
+            'Access-Control-Allow-Headers'     => 'X-Requested-With, Content-Type, Accept, Origin, Authorization, APIKey, Timestamp, AccessToken'
+        ];
+
+        return response()->json($data, $statusCode,$headers);
     }
 
     static function createErrorResponse($data,$statusCode = 400){

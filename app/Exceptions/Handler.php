@@ -73,23 +73,32 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        // if ($request->header('content-type') == 'application/json') {
-        //     return $this->handleApiException($request, $exception);
-        // }else {
+        if ($request->header('content-type') == 'application/json') {
+            return $this->handleApiException($request, $exception);
+        }else {
             $retval = parent::render($request, $exception);
-        // }
+        }
         return $retval;
     }
 
     private function handleApiException($request, \Exception $exception)
     {
-        // dd($exception->getMessage());
+
+        $headers = [
+            'Access-Control-Allow-Origin'      => '*',
+            'Access-Control-Allow-Methods'     => 'HEAD, POST, GET, OPTIONS, PUT, DELETE',
+            'Access-Control-Allow-Credentials' => 'true',
+            'Access-Control-Max-Age'           => '86400',
+            'Access-Control-Allow-Headers'     => 'X-Requested-With, Content-Type, Accept, Origin, Authorization, APIKey, Timestamp, AccessToken'
+        ];
+
         $code = $this->error_code();
         $statusCode = $exception->getCode() ?? 500;
         self::generateReport($exception,$code);
         return ResponseInterface::createErrorResponse(
             $exception->getMessage()
-            ,$statusCode
+            ,$statusCode,
+            $headers
         );
     }
 

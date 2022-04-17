@@ -32,9 +32,10 @@ class SignatureController extends Controller
             [
                 'responseCode' => Http::code('successful'),
                 'responseMessage' => Http::message('successful'),
-                "accessToken" => $token,
-                "tokenType" => "Bearer",
-                "expiresIn" => ResponseInterface::decodeJwtSignature($token,$request->header('x-signature'))->exp ?? null,
+                'accessToken' => $token,
+                'tokenType' => 'Bearer',
+                'expiresIn' => (string) ResponseInterface::decodeJwtSignature($token,$request->header('x-signature'))->exp ?? null,
+                'additionalinfo' => null
             ]
         );
     }
@@ -51,6 +52,8 @@ class SignatureController extends Controller
     public function cardValidation(Request $request)
     {
         try {
+              dd($request->getContent());
+
             // if(!$request->header('channel-id')) throw new \Exception(
             //     ServicesResponseCode::message('invalid-mandatory-field-field-name'),
             //     ServicesResponseCode::httpCode('invalid-mandatory-field-field-name')
