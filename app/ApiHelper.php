@@ -37,7 +37,23 @@ class ApiHelper {
             'Access-Control-Allow-Methods'     => 'HEAD, POST, GET, OPTIONS, PUT, DELETE',
             'Access-Control-Allow-Credentials' => 'true',
             'Access-Control-Max-Age'           => '86400',
-            'Access-Control-Allow-Headers'     => 'X-Requested-With, Content-Type, Accept, Origin, Authorization, APIKey, Timestamp, AccessToken'
+            'Access-Control-Allow-Headers'     => 'X-CLIENT-KEY',
+                                                    'X-TIMESTAMP',
+                                                    'X-CLIENT-SECRET',
+                                                    'Content-Type',
+                                                    'X-SIGNATURE',
+                                                    'Accept',
+                                                    'Authorization',
+                                                    'Authorization-Customer',
+                                                    'ORIGIN',
+                                                    'X-PARTNER-ID',
+                                                    'X-EXTERNAL-ID',
+                                                    'X-IP-ADDRESS',
+                                                    'X-DEVICE-ID',
+                                                    'CHANNEL-ID',
+                                                    'X-LATITUDE',
+                                                    'X-LONGITUDE'
+
         ];
 
         return response()->json($data, $statusCode,$headers);
