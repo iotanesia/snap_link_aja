@@ -33,7 +33,7 @@ class ApiHelper {
 
     static function resultResponse($data,$statusCode = 200){
         $headers = [
-            'Access-Control-Allow-Origin'      => '*',
+            'Access-Control-Allow-Origin'      => 'https://apidevportal.bi.go.id',
             'Access-Control-Allow-Methods'     => 'HEAD, POST, GET, OPTIONS, PUT, DELETE',
             'Access-Control-Allow-Credentials' => 'true',
             'Access-Control-Max-Age'           => '86400',
