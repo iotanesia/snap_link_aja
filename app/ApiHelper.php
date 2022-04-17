@@ -54,12 +54,12 @@ class ApiHelper {
         return response()->json($response, 200);
     }
 
-    static function responseDataSnap($httpCodeSlug = 'successful', $signature = null, $token = null, $additionlInfo = null) {
+    static function responseDataSnap($httpCodeSlug = 'successfull', $signature = null, $token = null, $additionlInfo = null) {
         // $resCode = ResponseCode::where('slug', $httpCodeSlug)->first();
         // $resCode = ResponseCode::where('slug', $httpCodeSlug)->first();
         $responseCode = ResponseCode::httpCode($httpCodeSlug).EC::SERVICE_CODE.ResponseCode::caseCode($httpCodeSlug);
 
-        if($httpCodeSlug == 'successful') {
+        if($httpCodeSlug == 'successfull') {
             $tokenExp = self::decodeJwtSignature($token, $signature);
             $response = [
                 "responseCode" => $responseCode,
