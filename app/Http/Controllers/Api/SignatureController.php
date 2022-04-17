@@ -46,7 +46,10 @@ class SignatureController extends Controller
     public function generateResponseLabel(Request $request)
     {
         try {
-            if(in_array(false,RequestService::validationPayload($request))) throw new \Exception("Not true", 1);
+            if(!$request->header('channel-id')) throw new \Exception("Invalid Mandatory CHANNEL-ID", 400);
+            if(!$request->header('x-external-id')) throw new \Exception("Invalid Mandatory X-EXTERNAL-ID", 400);
+            if(!$request->header('x-partner-id')) throw new \Exception("Invalid Mandatory X-PARTNER-ID", 400);
+            if(in_array(false,RequestService::validationPayload($request))) throw new \Exception("Invalid Signature", 401);
             return ResponseInterface::resultResponse(
                 [
                     'responseCode' => Http::code('successful'),
