@@ -9,7 +9,8 @@ use App\Constants\ErrorCode as EC;
 use App\Constants\ErrorMessage as EM;
 use App\Constants\Snap;
 use App\Exceptions\CustomException;
-use App\Models\ResponseCode;
+// use App\Models\ResponseCode;
+use App\Services\ResponseCode;
 use Exception;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Carbon;
@@ -54,14 +55,15 @@ class ApiHelper {
     }
 
     static function responseDataSnap($httpCodeSlug = 'successful', $signature = null, $token = null, $additionlInfo = null) {
-        $resCode = ResponseCode::where('slug', $httpCodeSlug)->first();
-        $responseCode = $resCode->http_code.EC::SERVICE_CODE.$resCode->case_code;
+        // $resCode = ResponseCode::where('slug', $httpCodeSlug)->first();
+        // $resCode = ResponseCode::where('slug', $httpCodeSlug)->first();
+        $responseCode = ResponseCode::httpCode($httpCodeSlug).EC::SERVICE_CODE.ResponseCode::caseCode($httpCodeSlug);
 
         if($httpCodeSlug == 'successful') {
             $tokenExp = self::decodeJwtSignature($token, $signature);
             $response = [
                 "responseCode" => $responseCode,
-                "responseMessage" => $resCode->description,
+                "responseMessage" => ResponseCode::description($httpCodeSlug),
                 "accessToken" => $token,
                 "tokenType" => "Bearer",
                 "expiresIn" => $tokenExp->exp,
@@ -70,11 +72,11 @@ class ApiHelper {
         } else {
             $response = [
                 "responseCode" => $responseCode,
-                "responseMessage" => $resCode->description,
+                "responseMessage" => ResponseCode::description($httpCodeSlug),
             ];
         }
 
-        return response()->json($response, $resCode->http_code);
+        return response()->json($response, ResponseCode::httpCode($httpCodeSlug));
     }
 
     static function createResponse($EC, $EM, $data = false) {
