@@ -52,7 +52,7 @@ class SignatureController extends Controller
     public function cardValidation(Request $request)
     {
         try {
-              dd($request->getContent());
+            //   dd($request->getContent());
 
             // if(!$request->header('channel-id')) throw new \Exception(
             //     ServicesResponseCode::message('invalid-mandatory-field-field-name'),
