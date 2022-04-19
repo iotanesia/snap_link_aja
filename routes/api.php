@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthControler;
+use App\Http\Controllers\Api\Bri\BriController;
 use App\Http\Controllers\Api\SignatureController;
 use App\Http\Controllers\Api\UserControler;
 use Illuminate\Http\Request;
@@ -38,6 +39,24 @@ Route::prefix('v1')
         Route::post('/',[UserControler::class,'save']);
         Route::put('/',[UserControler::class,'update']);
         Route::delete('/{id}',[UserControler::class,'delete']);
+
+    });
+
+    //bri
+    Route::prefix('bri')
+    ->namespace('Bri')
+    ->group(function ()
+    {
+        Route::post('/signature-auth',[BriController::class,'signatureAuth']);
+
+    });
+
+    //mandiri
+    Route::prefix('mandiri')
+    ->namespace('Mandiri')
+    ->group(function ()
+    {
+        Route::post('/signature-auth',[MandiriController::class,'signatureAuth']);
 
     });
 
