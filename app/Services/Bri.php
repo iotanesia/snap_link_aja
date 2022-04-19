@@ -18,7 +18,9 @@ class Bri {
         try {
             $date = Carbon::now()->toIso8601String();
             // $date = gmdate("Y-m-d\TH:i:s.000\Z");
+            // dd($date);
             $private_key = Storage::get('private.key');
+            // dd($private_key);
             $plaintext = Snap::CLIENT_ID."|".$date;
             Log::info("plaintext: ".$plaintext);
             $binary_signature="";
@@ -28,6 +30,10 @@ class Bri {
                 'timestamp' => $date,
                 'id_key' => Snap::CLIENT_ID
             ];
+
+            // $pubkeyid = Storage::get('public.key');
+            // // $tes = openssl_verify($plaintext, base64_decode($param['signature']), $pubkeyid, Snap::RSA_TYPE);
+            // // dd($tes);
             $response = Patner::getAccessToken($param);
             dd($response);
             return ['signature' => base64_encode($binary_signature), 'timestamp' => $date];
