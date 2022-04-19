@@ -13,7 +13,7 @@ class Bri {
         try {
             $response = Http::timeout(5)
             ->withHeaders([
-                'X-CLIENT-KEY' => 'h5KQRxkbd5PxQXD8QRgtf7PvLSsKqbuq',
+                'X-CLIENT-KEY' => $param['id_key'],
                 'X-SIGNATURE' => $param['signature'],
                 'X-TIMESTAMP' => $param['timestamp']
             ])
