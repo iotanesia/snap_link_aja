@@ -20,6 +20,16 @@ class BriController extends Controller
         }
     }
 
+    public function signatureService(Request $request)
+    {
+        try {
+            //code...
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+
+    }
+
     public function accountInquiryInternal(Request $request)
     {
         try {

@@ -49,6 +49,7 @@ Route::prefix('v1')
     ->group(function ()
     {
         Route::post('/signature-auth',[BriController::class,'signatureAuth']);
+        Route::post('/signature-service',[BriController::class,'signatureService']);
         Route::post('/account-inquiry-internal',[BriController::class,'accountInquiryInternal']);
 
     });

@@ -47,4 +47,20 @@ class Bri {
         }
         return base64_encode($return);
     }
+
+    public static function access($request)
+    {
+       try {
+
+       } catch (\Throwable $th) {
+           throw $th;
+       }
+    }
+
+    public static function generateSecondSignature($request)
+    {
+        $body = json_decode(json_decode($request->all(), false), false);
+        $payload = $request->header('HttpMethod').':'.$request->header('EndpointUrl').':'.$request->header('AccessToken').':'.(string) json_encode($body,false).':'.$request->header('X-TIMESTAMP');
+        return $payload;
+    }
 }
