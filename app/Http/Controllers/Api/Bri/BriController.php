@@ -34,7 +34,18 @@ class BriController extends Controller
     {
         try {
             return ResponseInterface::resultResponse(
-                'ss'
+                Bri::access($request, '/intrabank/snap/v1.0/account-inquiry-internal')
+            );
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function accountInquiryStatus(Request $request)
+    {
+        try {
+            return ResponseInterface::resultResponse(
+                Bri::access($request, '/snap/v1.0/transfer/status')
             );
         } catch (\Throwable $th) {
             throw $th;

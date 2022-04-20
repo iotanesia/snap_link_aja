@@ -11,13 +11,14 @@ use App\Models\ResponseCode;
 use App\Constants\ErrorCode AS EC;
 use Illuminate\Support\Facades\File;
 use App\Patners\Bri as Patner;
+use Illuminate\Support\Str;
 
 class Bri {
 
     public static function authenticate($request)
     {
         try {
-            $date = substr(Carbon::now()->format('Y-m-d\TH:i:s.u'),0,23).'+07:00';
+            $date = Helper::getDateNow();
             $private_key = Storage::get('private.key');
             $stringToSign = Snap::CLIENT_ID."|".$date;
             Log::info("plaintext: ".$stringToSign);
@@ -30,6 +31,7 @@ class Bri {
                 'id_key' => Snap::CLIENT_ID
             ];
             $response = Patner::getAccessToken($param);
+            $response['timestamp'] = $date;
             return $response;
         } catch (\Throwable $th) {
             throw $th;
@@ -48,19 +50,36 @@ class Bri {
         return base64_encode($return);
     }
 
-    public static function access($request)
+    public static function access($request, $url)
     {
-       try {
-
-       } catch (\Throwable $th) {
-           throw $th;
-       }
+        try {
+            $params = ['timeStamp' => $request->header('X-TIMESTAMP'),
+                       'url' => $url,
+                       'request' => $request
+                      ];
+            $secondSignature = self::generateSecondSignature($params);
+            $param = ['signature' => hash_hmac('sha512', $secondSignature, snap::CLIENT_SECRET),
+                      'externalId' => rand(0,999999999),
+                      'partnerId' => snap::CLIENT_ID,
+                      'auth' => $request->bearerToken(),
+                      'channelId' => rand(0,9999),
+                      'body' => $request->all(),
+                      'timestamp' => $params['timeStamp'],
+                      'url' => $url
+                     ];
+            return Patner::accountInquiryInternal($param);
+ 
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
-    public static function generateSecondSignature($request)
+    public static function generateSecondSignature($param)
     {
-        // $body = json_decode(json_decode($request->all(), false), false);
-        // $payload = $request->header('HttpMethod').':'.$request->header('EndpointUrl').':'.$request->bearerToken().':'.(string) json_encode($body,false).':'.$request->header('X-TIMESTAMP');
-        // return $payload;
+        $body = $param['request']->all();
+        $minify = json_encode($body);
+        $hexstring = strtolower(hash('sha256', $minify));
+        $payload = $param['request']->getMethod().':'.$param['url'].':'.$param['request']->bearerToken().':'.(string) $hexstring.':'.$param['timeStamp'];
+        return $payload;
     }
 }

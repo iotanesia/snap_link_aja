@@ -47,10 +47,24 @@ class Bri {
         }
     }
 
-    public static function accountInquiryInternal($request)
+    public static function accountInquiryInternal($param)
     {
         try {
-
+            $response = Http::timeout(5)
+            ->withHeaders([
+                'Authorization' => 'Bearer '.$param['auth'],
+                'X-SIGNATURE' => $param['signature'],
+                'X-TIMESTAMP' => $param['timestamp'],
+                'X-PARTNER-ID' => $param['partnerId'],
+                'X-EXTERNAL-ID' => $param['externalId'],
+                'CHANNEL-ID' => $param['channelId']
+            ])
+            ->contentType("application/json")
+            ->post(self::host.$param['url'], $param['body']);
+            Log::info(json_encode($response->json()));
+            // dd($response);
+            // if($response->getStatusCode() != 200) throw new \Exception($response->getReasonPhrase(), $response->getStatusCode());
+            return $response->json();
         } catch (\Throwable $th) {
             throw $th;
         }
