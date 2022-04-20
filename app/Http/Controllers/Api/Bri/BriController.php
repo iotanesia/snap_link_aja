@@ -20,11 +20,11 @@ class BriController extends Controller
         }
     }
 
-    public function signatureVerif(Request $request)
+    public function accountInquiryInternal(Request $request)
     {
         try {
             return ResponseInterface::resultResponse(
-                Signature::verified($request)
+                'ss'
             );
         } catch (\Throwable $th) {
             throw $th;
