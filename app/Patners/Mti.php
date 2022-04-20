@@ -4,23 +4,21 @@ namespace App\Patners;
 
 use Illuminate\Support\Facades\Http;
 use App\Constants\Snap;
-class Bri {
+class Mti {
 
-    const host = 'https://sandbox.partner.api.bri.co.id';
+    const host = 'https://dev.yokke.co.id:7778';
     public static function getAccessToken($param)
     {
         try {
-            $response = Http::timeout(5)
+            $response = Http::timeout(0)
             ->withHeaders([
-                'X-CLIENT-KEY' => $param['id_key'],
+                'X-MTI-KEY' => $param['id_key'],
                 'X-SIGNATURE' => $param['signature'],
                 'X-TIMESTAMP' => $param['timestamp']
             ])
             ->contentType("application/json")
-            ->post(self::host.'/snap/v1.0/access-token/b2b',[
-                'grantType' => 'client_credentials'
-            ]);
-            if($response->getStatusCode() != 200) throw new \Exception($response->getReasonPhrase(), $response->getStatusCode());
+            ->get(self::host.'/directDebit/getjwt');
+            dd($response->getStatusCode());
             return $response->json();
         } catch (\Throwable $th) {
             throw $th;

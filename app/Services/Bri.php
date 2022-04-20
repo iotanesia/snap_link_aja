@@ -11,34 +11,40 @@ use App\Models\ResponseCode;
 use App\Constants\ErrorCode AS EC;
 use Illuminate\Support\Facades\File;
 use App\Patners\Bri as Patner;
+
 class Bri {
 
     public static function authenticate($request)
     {
         try {
-            $date = Carbon::now()->toIso8601String();
-            // $date = gmdate("Y-m-d\TH:i:s.000\Z");
-            // dd($date);
+            $date = substr(Carbon::now()->format('Y-m-d\TH:i:s.u'),0,23).'+07:00';
             $private_key = Storage::get('private.key');
-            // dd($private_key);
-            $plaintext = Snap::CLIENT_ID."|".$date;
-            Log::info("plaintext: ".$plaintext);
+            $stringToSign = Snap::CLIENT_ID."|".$date;
+            Log::info("plaintext: ".$stringToSign);
             $binary_signature="";
-            openssl_sign($plaintext, $binary_signature, $private_key, Snap::RSA_TYPE);
+            openssl_sign($stringToSign, $binary_signature, $private_key, 'SHA256');
+            $signature =base64_encode($binary_signature);
             $param = [
-                'signature' => base64_encode($binary_signature),
+                'signature' => self::hex64($signature),
                 'timestamp' => $date,
                 'id_key' => Snap::CLIENT_ID
             ];
-
-            // $pubkeyid = Storage::get('public.key');
-            // // $tes = openssl_verify($plaintext, base64_decode($param['signature']), $pubkeyid, Snap::RSA_TYPE);
-            // // dd($tes);
             $response = Patner::getAccessToken($param);
-            dd($response);
-            return ['signature' => base64_encode($binary_signature), 'timestamp' => $date];
+            return $response;
         } catch (\Throwable $th) {
             throw $th;
         }
+    }
+
+    static function hex64($signature) {
+        return bin2hex(base64_decode($signature));;
+    }
+
+    static function hex_to_base64($hex){
+        $return = '';
+        foreach(str_split($hex, 2) as $pair){
+          $return .= chr(hexdec($pair));
+        }
+        return base64_encode($return);
     }
 }
