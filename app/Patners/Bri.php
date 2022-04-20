@@ -27,4 +27,13 @@ class Bri {
         }
     }
 
+    public static function accountInqueryInternal($request)
+    {
+        try {
+           
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
 }
