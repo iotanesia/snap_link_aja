@@ -4,6 +4,7 @@ namespace App\Patners;
 
 use Illuminate\Support\Facades\Http;
 use App\Constants\Snap;
+use Illuminate\Support\Facades\Log;
 class Bri {
 
     const host = 'https://sandbox.partner.api.bri.co.id';
@@ -20,6 +21,7 @@ class Bri {
             ->post(self::host.'/snap/v1.0/access-token/b2b',[
                 'grantType' => 'client_credentials'
             ]);
+            Log::info(json_encode($response->json()));
             if($response->getStatusCode() != 200) throw new \Exception($response->getReasonPhrase(), $response->getStatusCode());
             return $response->json();
         } catch (\Throwable $th) {

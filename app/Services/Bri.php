@@ -59,8 +59,8 @@ class Bri {
 
     public static function generateSecondSignature($request)
     {
-        $body = json_decode(json_decode($request->all(), false), false);
-        $payload = $request->header('HttpMethod').':'.$request->header('EndpointUrl').':'.$request->header('AccessToken').':'.(string) json_encode($body,false).':'.$request->header('X-TIMESTAMP');
-        return $payload;
+        // $body = json_decode(json_decode($request->all(), false), false);
+        // $payload = $request->header('HttpMethod').':'.$request->header('EndpointUrl').':'.$request->bearerToken().':'.(string) json_encode($body,false).':'.$request->header('X-TIMESTAMP');
+        // return $payload;
     }
 }
