@@ -5,6 +5,7 @@ namespace App\Patners;
 use Illuminate\Support\Facades\Http;
 use App\Constants\Snap;
 use Illuminate\Support\Facades\Log;
+use App\ApiHelper as Helper;
 class Bri {
 
     const host = 'https://sandbox.partner.api.bri.co.id';
@@ -62,8 +63,7 @@ class Bri {
             ->contentType("application/json")
             ->post(self::host.$param['url'], $param['body']);
             Log::info(json_encode($response->json()));
-            // dd($response);
-            // if($response->getStatusCode() != 200) throw new \Exception($response->getReasonPhrase(), $response->getStatusCode());
+            if($response->getStatusCode() != 200) throw new \Exception(json_encode($response->json()), $response->getStatusCode());
             return $response->json();
         } catch (\Throwable $th) {
             throw $th;

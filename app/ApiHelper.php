@@ -37,29 +37,26 @@ class ApiHelper {
             'Access-Control-Allow-Methods'     => 'GET, POST, PUT, PATCH, DELETE',
             'Access-Control-Allow-Credentials' => 'true',
             'Access-Control-Max-Age'           => '86400',
-            // 'Access-Control-Allow-Headers'     => 'X-Requested-With, Content-Type, Accept, Origin, Authorization, APIKey, Timestamp, AccessToken', 'X-TIMESTAMP',
             'Access-Control-Allow-Headers'     => 'X-TIMESTAMP,X-CLIENT-KEY,X-CLIENT-SECRET,Content-Type,X-SIGNATURE,Accept,Authorization,Authorization-Customer,ORIGIN,X-PARTNER-ID,X-EXTERNAL-ID,X-IP-ADDRESS,X-DEVICE-ID,CHANNEL-ID,X-LATITUDE,X-LONGITUDE'
 
         ];
-
-        // $headers = [
-        //     'Access-Control-Allow-Origin'      => 'https://apidevportal.bi.go.id',
-        //     'Access-Control-Allow-Methods'     => 'POST, GET, PUT, DELETE',
-        //     'Access-Control-Allow-Credentials' => 'true',
-        //     'Access-Control-Max-Age'           => '86400',
-        //     'Access-Control-Allow-Headers'     => 'X-TIMESTAMP,X-CLIENT-KEY,X-CLIENT-SECRET,Content-Type,X-SIGNATURE,Accept,Authorization,Authorization-Customer,ORIGIN,X-PARTNER-ID,X-EXTERNAL-ID,X-IP-ADDRESS,X-DEVICE-ID,CHANNEL-ID,X-LATITUDE,X-LONGITUDE'
-
-        // ];
-
         return response()->json($data, $statusCode,$headers);
     }
 
     static function createErrorResponse($data,$statusCode = 400){
+        $headers = [
+            'Access-Control-Allow-Origin'      => '*',
+            'Access-Control-Allow-Methods'     => 'HEAD, POST, GET, OPTIONS, PUT, DELETE',
+            'Access-Control-Allow-Credentials' => 'true',
+            'Access-Control-Max-Age'           => '86400',
+            'Access-Control-Allow-Headers'     => 'X-TIMESTAMP,X-CLIENT-KEY,X-CLIENT-SECRET,Content-Type,X-SIGNATURE,Accept,Authorization,Authorization-Customer,ORIGIN,X-PARTNER-ID,X-EXTERNAL-ID,X-IP-ADDRESS,X-DEVICE-ID,CHANNEL-ID,X-LATITUDE,X-LONGITUDE'
+
+        ];
         $code = ResponseCode::codeByMessage($data);
         return response()->json([
             "responseCode" => $code ?? $statusCode,
             "responseMessage" => $data
-        ],$statusCode);
+        ],$statusCode,$headers);
     }
 
     static function responseData($data = false){
@@ -309,6 +306,12 @@ class ApiHelper {
 
     static function getDateNow() {
         return substr(Carbon::now()->format('Y-m-d\TH:i:s.u'),0,23).'+07:00';
+    }
+
+    static function getMessageForPatner($message)
+    {
+        $message = json_decode($message);
+        return $message->responseMessage ?? null;
     }
 
 }

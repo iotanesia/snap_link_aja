@@ -16,7 +16,10 @@ class BriController extends Controller
                 Bri::authenticate($request)
             );
         } catch (\Throwable $th) {
-            throw $th;
+            return ResponseInterface::createErrorResponse(
+                ResponseInterface::getMessageForPatner($th->getMessage())
+                ,$th->getCode(),
+            );
         }
     }
 
@@ -37,7 +40,10 @@ class BriController extends Controller
                 Bri::access($request, '/intrabank/snap/v1.0/account-inquiry-internal')
             );
         } catch (\Throwable $th) {
-            throw $th;
+            return ResponseInterface::createErrorResponse(
+                ResponseInterface::getMessageForPatner($th->getMessage())
+                ,$th->getCode(),
+            );
         }
     }
 
@@ -48,7 +54,10 @@ class BriController extends Controller
                 Bri::access($request, '/snap/v1.0/transfer/status')
             );
         } catch (\Throwable $th) {
-            throw $th;
+            return ResponseInterface::createErrorResponse(
+                ResponseInterface::getMessageForPatner($th->getMessage())
+                ,$th->getCode(),
+            );
         }
     }
 }
