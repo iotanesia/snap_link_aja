@@ -16,12 +16,10 @@ class BriController extends Controller
                 Bri::authenticate($request)
             );
         } catch (\Throwable $th) {
-            throw $th;
-
-            // return ResponseInterface::createErrorResponse(
-            //     ResponseInterface::getMessageForPatner($th->getMessage())
-            //     ,$th->getCode(),
-            // );
+            return ResponseInterface::createErrorResponse(
+                ResponseInterface::getMessageForPatner($th->getMessage())
+                ,$th->getCode(),
+            );
         }
     }
 
