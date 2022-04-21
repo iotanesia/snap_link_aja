@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthControler;
 use App\Http\Controllers\Api\Bri\BriController;
+use App\Http\Controllers\Api\Mti\MtiController;
 use App\Http\Controllers\Api\SignatureController;
 use App\Http\Controllers\Api\UserControler;
 use Illuminate\Http\Request;
@@ -48,6 +49,9 @@ Route::prefix('v1')
     ->group(function ()
     {
         Route::post('/signature-auth',[BriController::class,'signatureAuth']);
+        // Route::post('/signature-service',[BriController::class,'signatureService']);
+        Route::post('/account-inquiry-internal',[BriController::class,'accountInquiryInternal']);
+        Route::post('/account-inquiry-status',[BriController::class,'accountInquiryStatus']);
 
     });
 
@@ -59,6 +63,16 @@ Route::prefix('v1')
         Route::post('/signature-auth',[MandiriController::class,'signatureAuth']);
 
     });
+
+       //mandiri
+       Route::prefix('mti')
+       ->namespace('Mti')
+       ->group(function ()
+       {
+           Route::post('/signature-auth',[MtiController::class,'signatureAuth']);
+
+       });
+
 
     Route::post('/signature-auth',[SignatureController::class,'create']);
     Route::middleware('signature')->group(function ()

@@ -5,10 +5,8 @@ namespace App\Constants;
 
 class Snap
 {
-    const CLIENT_ID = 'b0c75d7e09c54a8c9398395bb8ccb8ff';
-    const CLIENT_SECRET = 'MMKAkXRKL4ls7ihMiI4pw/3KJpVHAkKHHte69U8Bw2Y=';
-    const PRIVATE_KEY = 'RqCZ4teYVi9eI+I81oN18BlnVl7wlXHW7uF8z2tiSFM=';
-    const RSA_TYPE = 'SHA256';
+    const CLIENT_ID = 'QllU4vMrC6IvFL5ZIyZ6xrBOBJhyNKA6';
+    const CLIENT_SECRET = 'Y5LTwZADyI0kU6oK';
 
     const MSG_SUCCESS = [
         'category' => 'Success',
@@ -90,6 +88,8 @@ class Snap
         'message' => 'Customer Token Not Found',
         'description' => 'Token not found in the system. This occurs on any API that requires token as input parameter',
     ];
+    const RSA_TYPE = OPENSSL_ALGO_SHA256;
+
 
 }
 
