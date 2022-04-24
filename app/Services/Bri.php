@@ -53,22 +53,23 @@ class Bri {
     public static function access($request, $url)
     {
         try {
-            $params = ['timeStamp' => $request->header('X-TIMESTAMP'),
-                       'url' => $url,
-                       'request' => $request
-                      ];
+            $params = [
+                'timeStamp' => $request->header('X-TIMESTAMP'),
+                'url' => $url,
+                'request' => $request
+            ];
             $secondSignature = self::generateSecondSignature($params);
             $param = ['signature' => hash_hmac('sha512', $secondSignature, snap::CLIENT_SECRET),
                       'externalId' => rand(0,999999999),
-                      'partnerId' => snap::CLIENT_ID,
+                      'partnerId' => 90890,
                       'auth' => $request->bearerToken(),
-                      'channelId' => rand(0,9999),
+                      'channelId' => 87899,
                       'body' => $request->all(),
                       'timestamp' => $params['timeStamp'],
                       'url' => $url
                      ];
             return Patner::accountInquiryInternal($param);
- 
+
         } catch (\Throwable $th) {
             throw $th;
         }

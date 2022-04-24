@@ -46,7 +46,7 @@ class BriController extends Controller
     {
         try {
             return ResponseInterface::resultResponse(
-                Bri::access($request, '/snap/v1.0/transfer-intrabank')
+                Bri::access($request, '/intrabank/snap/v1.0/transfer-intrabank')
             );
         } catch (\Throwable $th) {
             return ResponseInterface::setErrorResponse($th);
