@@ -41,6 +41,7 @@ class Bri {
             ->post(self::host.'/snap/v1.0/access-token/b2b',[
                 'grantType' => 'client_credentials'
             ]);
+            dd($response->getStatusCode());
             if($response->getStatusCode() != 200) throw new \Exception($response->getReasonPhrase(), $response->getStatusCode());
             return $response->json();
         } catch (\Throwable $th) {
@@ -69,5 +70,7 @@ class Bri {
             throw $th;
         }
     }
+
+
 
 }

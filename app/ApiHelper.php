@@ -52,11 +52,29 @@ class ApiHelper {
             'Access-Control-Allow-Headers'     => 'X-TIMESTAMP,X-CLIENT-KEY,X-CLIENT-SECRET,Content-Type,X-SIGNATURE,Accept,Authorization,Authorization-Customer,ORIGIN,X-PARTNER-ID,X-EXTERNAL-ID,X-IP-ADDRESS,X-DEVICE-ID,CHANNEL-ID,X-LATITUDE,X-LONGITUDE'
 
         ];
+        $codeSt = $statusCode == 0 ? 500 : $statusCode;
         $code = ResponseCode::codeByMessage($data);
         return response()->json([
-            "responseCode" => $code ?? $statusCode,
+            "responseCode" => $code ?? $codeSt,
             "responseMessage" => $data
-        ],$statusCode,$headers);
+        ],$codeSt,$headers);
+    }
+
+    static function setErrorResponse($th){
+        $headers = [
+            'Access-Control-Allow-Origin'      => '*',
+            'Access-Control-Allow-Methods'     => 'HEAD, POST, GET, OPTIONS, PUT, DELETE',
+            'Access-Control-Allow-Credentials' => 'true',
+            'Access-Control-Max-Age'           => '86400',
+            'Access-Control-Allow-Headers'     => 'X-TIMESTAMP,X-CLIENT-KEY,X-CLIENT-SECRET,Content-Type,X-SIGNATURE,Accept,Authorization,Authorization-Customer,ORIGIN,X-PARTNER-ID,X-EXTERNAL-ID,X-IP-ADDRESS,X-DEVICE-ID,CHANNEL-ID,X-LATITUDE,X-LONGITUDE'
+
+        ];
+        $codeSt = $th->getCode() == 0 ? 500 : $th->getCode();
+        $code = ResponseCode::codeByMessage($th->getCode());
+        return response()->json([
+            "responseCode" => $code ?? $codeSt,
+            "responseMessage" => self::getMessageForPatner($th->getMessage())
+        ],$codeSt,$headers);
     }
 
     static function responseData($data = false){
@@ -308,10 +326,11 @@ class ApiHelper {
         return substr(Carbon::now()->format('Y-m-d\TH:i:s.u'),0,23).'+07:00';
     }
 
-    static function getMessageForPatner($message)
+    static function getMessageForPatner($data)
     {
-        $message = json_decode($message);
-        return $message->responseMessage ?? null;
+
+        $message = json_decode($data,true);
+        return isset($message['responseMessage']) ? $message['responseMessage'] : $data;
     }
 
 }

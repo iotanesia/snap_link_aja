@@ -16,17 +16,14 @@ class BriController extends Controller
                 Bri::authenticate($request)
             );
         } catch (\Throwable $th) {
-            return ResponseInterface::createErrorResponse(
-                ResponseInterface::getMessageForPatner($th->getMessage())
-                ,$th->getCode(),
-            );
+            return ResponseInterface::setErrorResponse($th);
         }
     }
 
     public function signatureService(Request $request)
     {
         try {
-            //code...
+
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -40,10 +37,7 @@ class BriController extends Controller
                 Bri::access($request, '/intrabank/snap/v1.0/account-inquiry-internal')
             );
         } catch (\Throwable $th) {
-            return ResponseInterface::createErrorResponse(
-                ResponseInterface::getMessageForPatner($th->getMessage())
-                ,$th->getCode(),
-            );
+            return ResponseInterface::setErrorResponse($th);
         }
     }
 
@@ -54,10 +48,18 @@ class BriController extends Controller
                 Bri::access($request, '/snap/v1.0/transfer/status')
             );
         } catch (\Throwable $th) {
-            return ResponseInterface::createErrorResponse(
-                ResponseInterface::getMessageForPatner($th->getMessage())
-                ,$th->getCode(),
+            return ResponseInterface::setErrorResponse($th);
+        }
+    }
+
+    public function transferIntrabank(Request $request)
+    {
+        try {
+            return ResponseInterface::resultResponse(
+                Bri::access($request, '/snap/v1.0/intrabank/snap/v1.0/transfer-intrabank')
             );
+        } catch (\Throwable $th) {
+            return ResponseInterface::setErrorResponse($th);
         }
     }
 }
