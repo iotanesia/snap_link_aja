@@ -51,7 +51,7 @@ Route::prefix('v1')
         Route::post('/signature-auth',[BriController::class,'signatureAuth']);
         Route::post('/account-inquiry-internal',[BriController::class,'accountInquiryInternal']);
         Route::post('/account-inquiry-status',[BriController::class,'accountInquiryStatus']);
-        Route::post('/transfer-intrabank',[BriController::class,'transferIntrabank']);
+        Route::post('/account-transfer-intrabank',[BriController::class,'transferIntrabank']);
 
     });
 
