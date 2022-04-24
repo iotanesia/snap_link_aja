@@ -56,33 +56,22 @@ Route::prefix('v1')
     });
 
     //mandiri
-    Route::prefix('mandiri')
-    ->namespace('Mandiri')
-    ->group(function ()
-    {
-        Route::post('/signature-auth',[MandiriController::class,'signatureAuth']);
+    // Route::prefix('mandiri')
+    // ->namespace('Mandiri')
+    // ->group(function ()
+    // {
+    //     Route::post('/signature-auth',[MandiriController::class,'signatureAuth']);
 
-    });
+    // });
 
-       //mandiri
-       Route::prefix('mti')
-       ->namespace('Mti')
-       ->group(function ()
-       {
-           Route::post('/signature-auth',[MtiController::class,'signatureAuth']);
+    // //mandiri
+    // Route::prefix('mti')
+    // ->namespace('Mti')
+    // ->group(function ()
+    // {
+    //     Route::post('/signature-auth',[MtiController::class,'signatureAuth']);
 
-       });
-
-
-    Route::post('/signature-auth',[SignatureController::class,'create']);
-    Route::middleware('signature')->group(function ()
-    {
-        Route::post('generate-token',[SignatureController::class,'generateToken']);
-    });
-
-    Route::post('signature-service',[SignatureController::class,'service']);
-    Route::post('card-validation',[SignatureController::class,'cardValidation']);
-    Route::post('registration/card-bind-limit',[SignatureController::class,'cardBindLimit']);
+    // });
 
 
 });
