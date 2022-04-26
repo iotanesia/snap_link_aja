@@ -53,16 +53,18 @@ class Bri {
     public static function access($request, $url)
     {
         try {
+            $auth = self::authenticate($request);
             $params = [
-                'timeStamp' => $request->header('X-TIMESTAMP'),
+                'timeStamp' => $auth['timestamp'],
                 'url' => $url,
-                'request' => $request
+                'request' => $request,
+                'token' => $auth['accessToken']
             ];
             $secondSignature = self::generateSecondSignature($params);
             $param = ['signature' => hash_hmac('sha512', $secondSignature, snap::CLIENT_SECRET),
                       'externalId' => rand(0,999999999),
                       'partnerId' => 90890,
-                      'auth' => $request->bearerToken(),
+                      'auth' => $params['token'],
                       'channelId' => 87899,
                       'body' => $request->all(),
                       'timestamp' => $params['timeStamp'],
@@ -80,7 +82,7 @@ class Bri {
         $body = $param['request']->all();
         $minify = json_encode($body);
         $hexstring = strtolower(hash('sha256', $minify));
-        $payload = $param['request']->getMethod().':'.$param['url'].':'.$param['request']->bearerToken().':'.(string) $hexstring.':'.$param['timeStamp'];
+        $payload = $param['request']->getMethod().':'.$param['url'].':'.$param['token'].':'.(string) $hexstring.':'.$param['timeStamp'];
         return $payload;
     }
 }
