@@ -47,18 +47,31 @@ We would like to extend our thanks to the following sponsors for funding Laravel
 - **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
 - **[Lendio](https://lendio.com)**
 
-## Contributing
+## Deploy
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- run cmd (Path Application) 
 
-## Code of Conduct
+- composer install 
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Configure ENV
 
-## Security Vulnerabilities
+- php artisan key:generate
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- php artisan storage:link
 
-## License
+## Run
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- Development : php artisan serve
+
+- Prod : access url
+
+## Dependency Service 
+
+- POST : api/bri/signature-auth
+
+- POST : api/bri/account-inquiry-internal
+
+- POST : api/bri/account-inquiry-status
+
+- POST : api/bri/transfer-intrabank
+
