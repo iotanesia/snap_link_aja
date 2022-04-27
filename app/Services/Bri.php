@@ -2,16 +2,11 @@
 
 namespace App\Services;
 
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use App\Constants\Snap;
 use Illuminate\Support\Facades\Log;
 use App\ApiHelper as Helper;
-use App\Models\ResponseCode;
-use App\Constants\ErrorCode AS EC;
-use Illuminate\Support\Facades\File;
 use App\Patners\Bri as Patner;
-use Illuminate\Support\Str;
 
 class Bri {
 
@@ -19,8 +14,8 @@ class Bri {
     {
         try {
             $date = Helper::getDateNow();
-            $private_key = Storage::get('private.key');
-            $stringToSign = Snap::CLIENT_ID."|".$date;
+            $private_key = Storage::get('private_bri.key');
+            $stringToSign = Snap::CLIENT_ID_BRI."|".$date;
             Log::info("plaintext: ".$stringToSign);
             $binary_signature="";
             openssl_sign($stringToSign, $binary_signature, $private_key, 'SHA256');
@@ -28,7 +23,7 @@ class Bri {
             $param = [
                 'signature' => self::hex64($signature),
                 'timestamp' => $date,
-                'id_key' => Snap::CLIENT_ID
+                'id_key' => Snap::CLIENT_ID_BRI
             ];
             $response = Patner::getAccessToken($param);
             $response['timestamp'] = $date;
@@ -61,17 +56,17 @@ class Bri {
                 'token' => $auth['accessToken']
             ];
             $secondSignature = self::generateSecondSignature($params);
-            $param = ['signature' => hash_hmac('sha512', $secondSignature, snap::CLIENT_SECRET),
-                      'externalId' => rand(0,999999999),
-                      'partnerId' => 90890,
-                      'auth' => $params['token'],
-                      'channelId' => 87899,
-                      'body' => $request->all(),
-                      'timestamp' => $params['timeStamp'],
-                      'url' => $url
-                     ];
-            return Patner::accountInquiryInternal($param);
-
+            $param = [
+                'signature' => hash_hmac('sha512', $secondSignature, snap::CLIENT_SECRET_BRI),
+                'externalId' => rand(0,999999999),
+                'partnerId' => 90890,
+                'auth' => $params['token'],
+                'channelId' => 87899,
+                'body' => $request->all(),
+                'timestamp' => $params['timeStamp'],
+                'url' => $url
+            ];
+            return Patner::snapService($param);
         } catch (\Throwable $th) {
             throw $th;
         }

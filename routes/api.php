@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthControler;
 use App\Http\Controllers\Api\Bri\BriController;
+use App\Http\Controllers\Api\Mandiri\MandiriController;
 use App\Http\Controllers\Api\UserControler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -37,7 +38,6 @@ Route::prefix('v1')
         Route::post('/',[UserControler::class,'save']);
         Route::put('/',[UserControler::class,'update']);
         Route::delete('/{id}',[UserControler::class,'delete']);
-
     });
 
     //bri
@@ -50,6 +50,17 @@ Route::prefix('v1')
         Route::post('/account-inquiry-status',[BriController::class,'accountInquiryStatus']);
         Route::post('/transfer-intrabank',[BriController::class,'transferIntrabank']);
 
+    });
+
+    //mandiri
+    Route::prefix('mandiri')
+    ->namespace('Mandiri')
+    ->group(function ()
+    {
+        Route::post('/signature-auth',[MandiriController::class,'signatureAuth']);
+        Route::post('/account-inquiry-internal',[MandiriController::class,'accountInquiryInternal']);
+        Route::post('/account-inquiry-status',[MandiriController::class,'accountInquiryStatus']);
+        Route::post('/transfer-intrabank',[MandiriController::class,'transferIntrabank']);
     });
 
 

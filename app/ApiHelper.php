@@ -189,7 +189,7 @@ class ApiHelper {
                 'https://www.linkaja.id',
                 'https://www.linkaja.id/mitra',
             ],
-            'clientid' => Snap::CLIENT_ID,
+            'clientid' => null,
             'iat' => $issued_at, // Time when JWT was issued.
             'exp' => $issued_at + 60
         ];

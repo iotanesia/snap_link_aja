@@ -5,9 +5,10 @@ namespace App\Patners;
 use Illuminate\Support\Facades\Http;
 use App\Constants\Snap;
 use Illuminate\Support\Facades\Log;
-class Bri {
+use App\ApiHelper as Helper;
+class Mandiri {
 
-    const host = 'https://sandbox.partner.api.bri.co.id';
+    const host = 'https://10.243.131.20:4001/openapi';
     public static function getAccessToken($param)
     {
         try {
@@ -18,7 +19,7 @@ class Bri {
                 'X-TIMESTAMP' => $param['timestamp']
             ])
             ->contentType("application/json")
-            ->post(self::host.'/snap/v1.0/access-token/b2b',[
+            ->post(self::host.'/auth/v2.0/access-token/b2b',[
                 'grantType' => 'client_credentials'
             ]);
             Log::info(json_encode($response->json()));
@@ -29,7 +30,7 @@ class Bri {
         }
     }
 
-    
+
     public static function snapService($param)
     {
         try {
@@ -51,7 +52,4 @@ class Bri {
             throw $th;
         }
     }
-
-
-
 }

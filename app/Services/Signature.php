@@ -19,7 +19,7 @@ class Signature {
         try {
             $date = Carbon::now()->toIso8601String();
             $private_key = Storage::get('private.key');
-            $plaintext = $date."|".Snap::CLIENT_ID;
+            $plaintext = $date."|".Snap::CLIENT_ID_BRI;
             Log::info("plaintext: ".$plaintext);
             $binary_signature="";
             openssl_sign($plaintext, $binary_signature, $private_key, Snap::RSA_TYPE);
@@ -93,7 +93,7 @@ class Signature {
         $url = $request->getRequestUri();
         $token = $request->bearerToken();
         $payload = $request->method().':'.$url.':'.$token.':'.(string) json_encode($body).':'.$request->header('X-TIMESTAMP');
-        $hmacs = hash_hmac('sha512', $payload, Snap::CLIENT_SECRET);
+        $hmacs = hash_hmac('sha512', $payload, Snap::CLIENT_SECRET_BRI);
         // dd($hmacs);
         return $request->header('X-SIGNATURE') == $hmacs ? true : false;
     }

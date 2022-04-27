@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\ApiHelper as ResponseInterface;
 use App\Services\Bri;
-use App\Services\Signature;
 class BriController extends Controller
 {
     public function signatureAuth(Request $request)
