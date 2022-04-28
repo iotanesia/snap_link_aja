@@ -70,11 +70,12 @@ class ApiHelper {
 
         ];
         $codeSt = $th->getCode() == 0 ? 500 : $th->getCode();
-        $code = ResponseCode::codeByMessage($th->getCode());
-        return response()->json([
+        $result = json_decode($th->getMessage());
+        if($codeSt == 500) $result = [
             "responseCode" => $code ?? $codeSt,
             "responseMessage" => self::getMessageForPatner($th->getMessage())
-        ],$codeSt,$headers);
+        ];
+        return response()->json($result,$codeSt,$headers);
     }
 
     static function responseData($data = false){
