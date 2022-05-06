@@ -33,6 +33,29 @@ class Mandiri {
         }
     }
 
+    public static function authenticateMandiri($request)
+    {
+        try {
+            $date = Helper::getDateNow();
+            $private_key = Storage::get('private_mandiri.key');
+            $stringToSign = Snap::CLIENT_ID_MANDIRI."|".$date;
+            Log::info("plaintext: ".$stringToSign);
+            $binary_signature="";
+            openssl_sign($stringToSign, $binary_signature, $private_key, 'SHA256');
+            $signature =base64_encode($binary_signature);
+            $param = [
+                'signature' => $signature,
+                'timestamp' => $date,
+                'id_key' => Snap::CLIENT_ID_MANDIRI
+            ];
+            $response = Patner::getAccessToken($param);
+            $response['timestamp'] = $date;
+            return $response;
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
     static function hex64($signature) {
         return bin2hex(base64_decode($signature));;
     }
