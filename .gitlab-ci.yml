@@ -5,7 +5,7 @@ include:
 variables:
   ARTIFACT_DIR: "artifacts"
   CHAPTER_NAME: "vendor"
-  CODEBASE_VERSION: "7.4-fpm"
+  CODEBASE_VERSION: "latest"
   CODE_BASE: "PHP"
   CONFIG_PATH: ".env"
   DEPLOYMENT_NAME: ""
