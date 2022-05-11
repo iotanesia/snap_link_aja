@@ -17,7 +17,7 @@ variables:
   FILECOPY_NAME: ""
   HEALTHCHECK: "/"
   MULTIDEPLOY: "false"
-  PORT: "6022"
+  PORT: "80"
   SONAR: "false"
   SQUAD_NAME: "iota"
   UNIT_TEST: "false"
