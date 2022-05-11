@@ -69,10 +69,11 @@ class ApiHelper {
             'Access-Control-Allow-Headers'     => 'X-TIMESTAMP,X-CLIENT-KEY,X-CLIENT-SECRET,Content-Type,X-SIGNATURE,Accept,Authorization,Authorization-Customer,ORIGIN,X-PARTNER-ID,X-EXTERNAL-ID,X-IP-ADDRESS,X-DEVICE-ID,CHANNEL-ID,X-LATITUDE,X-LONGITUDE'
 
         ];
+
         $codeSt = $th->getCode() == 0 ? 500 : $th->getCode();
         $result = json_decode($th->getMessage());
         if($codeSt == 500) $result = [
-            "responseCode" => $code ?? $codeSt,
+            "responseCode" => $result->responseCode ?? $codeSt,
             "responseMessage" => self::getMessageForPatner($th->getMessage())
         ];
         return response()->json($result,$codeSt,$headers);
