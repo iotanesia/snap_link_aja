@@ -43,7 +43,8 @@ build:
 	php artisan key:generate
 	php artisan storage:link
 	rm -rf Dockerfiles docker-compose.yml .git* README.md
-	tar -czvf $(CI_PROJECT_NAME).tar.gz $(CI_PROJECT_DIR)
+	cd ..
+	tar -czvf $(CI_PROJECT_NAME).tar.gz $(CI_PROJECT_NAME)
 	mkdir $(CI_PROJECT_DIR)/$(ARTIFACT_DIR)
 	mv $(CI_PROJECT_NAME).tar.gz $(CI_PROJECT_DIR)/$(ARTIFACT_DIR)
 
