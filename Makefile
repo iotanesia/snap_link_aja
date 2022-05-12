@@ -42,6 +42,8 @@ build:
 	composer install
 	php artisan key:generate
 	php artisan storage:link
-	tar --exclude='.git*' --exclude='docker*' --exclude='Dockerfiles' --exclude='Makefile' -czvf $(CI_PROJECT_NAME).tar.gz .
+	rm -rf Dockerfiles docker-compose.yml .git* README.md
+	tar -czvf $(CI_PROJECT_NAME).tar.gz $(CI_PROJECT_DIR)
+	mkdir $(CI_PROJECT_DIR)/$(ARTIFACT_DIR)
 	mv $(CI_PROJECT_NAME).tar.gz $(CI_PROJECT_DIR)/$(ARTIFACT_DIR)
 
