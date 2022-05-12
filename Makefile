@@ -42,5 +42,6 @@ build:
 	composer install
 	php artisan key:generate
 	php artisan storage:link
-	tar -czvf --exclude='*.git' --exclude='*docker' --exclude='Dockerfiles' --exclude='Makefile' $(CI_PROJECT_NAME).tar.gz $(CI_PROJECT_DIR)/$(ARTIFACT_DIR)/$(CI_PROJECT_NAME)
+	tar -czvf --exclude='*.git' --exclude='*docker' --exclude='Dockerfiles' --exclude='Makefile' $(CI_PROJECT_NAME).tar.gz .
+	mv $(CI_PROJECT_NAME).tar.gz $(CI_PROJECT_DIR)/$(ARTIFACT_DIR)
 
