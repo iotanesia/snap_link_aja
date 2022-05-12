@@ -30,7 +30,7 @@ Route::prefix('v1')
 ->namespace('Api')
 ->group(function () {
 
-    Route::get('/',function (Request $request){
+    Route::get('/test',function (Request $request){
        return "service up";
     });
 
