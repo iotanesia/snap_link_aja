@@ -6,6 +6,8 @@ use App\Http\Controllers\Api\Mandiri\MandiriController;
 use App\Http\Controllers\Api\UserControler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Spatie\Health\Http\Controllers\HealthCheckJsonResultsController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+Route::get('health', HealthCheckJsonResultsController::class);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
