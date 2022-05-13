@@ -27,11 +27,23 @@ Laravel is accessible, powerful, and provides tools required for large, robust a
 
 - composer install 
 
-- Configure ENV
+- Configure Database menggunakan postgre
+
+- Configure File .env
+    * Duplicate File .env.example dan rename menjadi .env
+    * Setting Database konfigurasi nya :
+        DB_CONNECTION=pgsql
+        DB_HOST=127.0.0.1
+        DB_PORT=5434
+        DB_DATABASE=(Nama Database yg dibuat)
+        DB_USERNAME=postgres
+        DB_PASSWORD= 
 
 - php artisan key:generate
 
 - php artisan storage:link
+
+- php artisan migrate
 
 ## Run
 
