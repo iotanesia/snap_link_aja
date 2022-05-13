@@ -14,7 +14,7 @@ class Bri {
     {
         try {
             $date = Helper::getDateNow();
-            $private_key = Storage::get('private_bri.key');
+            $private_key = Storage::get(config('services.bri.key').'.key');
             $stringToSign = Snap::CLIENT_ID_BRI."|".$date;
             Log::info("plaintext: ".$stringToSign);
             $binary_signature="";
