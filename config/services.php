@@ -30,4 +30,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'bri' => [
+        'host' => env('BRI_HOST','https://sandbox.partner.api.bri.co.id'),
+        'key' => env('BRI_KEY_PRIVATE_NAME'),
+    ],
+
 ];

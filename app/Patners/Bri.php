@@ -7,7 +7,6 @@ use App\Constants\Snap;
 use Illuminate\Support\Facades\Log;
 class Bri {
 
-    const host = 'https://sandbox.partner.api.bri.co.id';
     public static function getAccessToken($param)
     {
         try {
@@ -18,7 +17,7 @@ class Bri {
                 'X-TIMESTAMP' => $param['timestamp']
             ])
             ->contentType("application/json")
-            ->post(self::host.'/snap/v1.0/access-token/b2b',[
+            ->post(config('services.bri.host').'/snap/v1.0/access-token/b2b',[
                 'grantType' => 'client_credentials'
             ]);
             Log::info(json_encode($response->json()));
@@ -29,7 +28,7 @@ class Bri {
         }
     }
 
-    
+
     public static function snapService($param)
     {
         try {
@@ -43,7 +42,7 @@ class Bri {
                 'CHANNEL-ID' => $param['channelId']
             ])
             ->contentType("application/json")
-            ->post(self::host.$param['url'], $param['body']);
+            ->post(config('services.bri.host').$param['url'], $param['body']);
             Log::info(json_encode($response->json()));
             if($response->getStatusCode() != 200) throw new \Exception(json_encode($response->json()), $response->getStatusCode());
             return $response->json();
