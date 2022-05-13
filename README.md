@@ -43,6 +43,8 @@ Laravel is accessible, powerful, and provides tools required for large, robust a
 
 - php artisan storage:link
 
+- php artisan migrate
+
 ## Run
 
 - Development : php artisan serve
