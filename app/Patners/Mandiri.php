@@ -12,8 +12,7 @@ class Mandiri {
     public static function getAccessToken($param)
     {
         try {
-            $response = Http::timeout(5)
-            ->withHeaders([
+            $response = Http::withHeaders([
                 'X-CLIENT-KEY' => $param['id_key'],
                 'X-SIGNATURE' => $param['signature'],
                 'X-TIMESTAMP' => $param['timestamp']
@@ -34,8 +33,7 @@ class Mandiri {
     public static function snapService($param)
     {
         try {
-            $response = Http::timeout(5)
-            ->withHeaders([
+            $response = Http::withHeaders([
                 'Authorization' => 'Bearer '.$param['auth'],
                 'X-SIGNATURE' => $param['signature'],
                 'X-TIMESTAMP' => $param['timestamp'],
