@@ -21,4 +21,15 @@ class RSAController extends Controller
             throw $th;
         }
     }
+
+    public function uploadMandiri(Request $request)
+    {
+        try {
+            $file = $request->file('file');
+            Storage::putFileAs('', $file,'private_mandiri.key');
+            return ResponseInterface::responseData();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }

@@ -33,6 +33,7 @@ Route::prefix('v1')
 ->group(function () {
 
     Route::post('rsa-file',[RSAController::class,'upload']);
+    Route::post('rsa-file-mandiri',[RSAController::class,'uploadMandiri']);
 
     Route::get('/test',function (Request $request){
        return "service up";
