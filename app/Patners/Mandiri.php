@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Log;
 use App\ApiHelper as Helper;
 class Mandiri {
 
-    const host = 'https://10.243.131.20:4001/openapi';
+    // const host = 'https://10.243.131.20:4001/openapi';
+    const host = 'https://mandiri-snap.linkaja.dev:4001/openapi';
     public static function getAccessToken($param)
     {
         try {
