@@ -21,7 +21,7 @@ class Mandiri {
                 'X-TIMESTAMP' => $param['timestamp']
             ])
             ->contentType("application/json")
-            ->post(self::host.'/auth/v2.0/access-token/b2b',[
+            ->post(self::host.'/v2.0/access-token/b2b',[
                 'grantType' => 'client_credentials'
             ]);
             Log::info(json_encode($response->json()));
