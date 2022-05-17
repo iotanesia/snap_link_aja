@@ -24,7 +24,6 @@ class Mandiri {
             ->post(self::host.'/auth/v2.0/access-token/b2b',[
                 'grantType' => 'client_credentials'
             ]);
-            dd($response->json());
             Log::info(json_encode($response->json()));
             if($response->getStatusCode() != 200) throw new \Exception($response->getReasonPhrase(), $response->getStatusCode());
             return $response->json();

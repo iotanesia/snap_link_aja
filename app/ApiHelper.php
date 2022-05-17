@@ -75,7 +75,7 @@ class ApiHelper {
         if($codeSt == 500) $result = [
             "responseCode" => $result->responseCode ?? $codeSt,
             "responseMessage" => self::getMessageForPatner($th->getMessage()),
-            "infoError" => $th
+            // "infoError" => $th
         ];
         return response()->json($result,$codeSt,$headers);
     }
