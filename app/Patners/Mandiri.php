@@ -20,11 +20,11 @@ class Mandiri {
                 'X-SIGNATURE' => $param['signature'],
                 'X-TIMESTAMP' => $param['timestamp']
             ])
-            ->withOptions(["verify"=>false])
             ->contentType("application/json")
             ->post(self::host.'/auth/v2.0/access-token/b2b',[
                 'grantType' => 'client_credentials'
             ]);
+            dd($response);
             Log::info(json_encode($response->json()));
             if($response->getStatusCode() != 200) throw new \Exception($response->getReasonPhrase(), $response->getStatusCode());
             return $response->json();
@@ -47,7 +47,6 @@ class Mandiri {
                 'X-EXTERNAL-ID' => $param['externalId'],
                 'CHANNEL-ID' => $param['channelId']
             ])
-            ->withOptions(["verify"=>false])
             ->contentType("application/json")
             ->post(self::host.$param['url'], $param['body']);
             Log::info(json_encode($response->json()));
