@@ -19,7 +19,7 @@ class Mandiri {
                 'X-SIGNATURE' => $param['signature'],
                 'X-TIMESTAMP' => $param['timestamp']
             ])
-            ->withOptions(["verify"=>false])
+            // ->withOptions(["verify"=>false])
             ->contentType("application/json")
             ->post(self::host.'/auth/v2.0/access-token/b2b',[
                 'grantType' => 'client_credentials'
@@ -45,7 +45,7 @@ class Mandiri {
                 'X-EXTERNAL-ID' => $param['externalId'],
                 'CHANNEL-ID' => $param['channelId']
             ])
-            ->withOptions(["verify"=>false])
+            // ->withOptions(["verify"=>false])
             ->contentType("application/json")
             ->post(self::host.$param['url'], $param['body']);
             Log::info(json_encode($response->json()));
