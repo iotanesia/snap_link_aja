@@ -21,7 +21,7 @@ class Bri {
                 'grantType' => 'client_credentials'
             ]);
             Log::info(json_encode($response->json()));
-            if($response->getStatusCode() != 200) throw new \Exception($response->getReasonPhrase(), $response->getStatusCode());
+            if($response->getStatusCode() != 200) throw new \Exception(json_encode($response->json()), $response->getStatusCode());
             return $response->json();
         } catch (\Throwable $th) {
             throw $th;
