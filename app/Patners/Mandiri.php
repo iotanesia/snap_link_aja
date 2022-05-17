@@ -9,7 +9,7 @@ use App\ApiHelper as Helper;
 class Mandiri {
 
     // const host = 'https://10.243.131.20:4001/openapi';
-    const host = 'mandiri-snap.linkaja.dev:4001/openapi';
+    const host = 'https://mandiri-snap.linkaja.dev:4001/openapi';
     public static function getAccessToken($param)
     {
         try {
@@ -19,6 +19,7 @@ class Mandiri {
                 'X-SIGNATURE' => $param['signature'],
                 'X-TIMESTAMP' => $param['timestamp']
             ])
+            ->withOptions(["verify"=>false])
             ->contentType("application/json")
             ->post(self::host.'/auth/v2.0/access-token/b2b',[
                 'grantType' => 'client_credentials'
@@ -44,6 +45,7 @@ class Mandiri {
                 'X-EXTERNAL-ID' => $param['externalId'],
                 'CHANNEL-ID' => $param['channelId']
             ])
+            ->withOptions(["verify"=>false])
             ->contentType("application/json")
             ->post(self::host.$param['url'], $param['body']);
             Log::info(json_encode($response->json()));
