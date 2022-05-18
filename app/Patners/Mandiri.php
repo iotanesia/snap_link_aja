@@ -24,11 +24,11 @@ class Mandiri {
             ->post(self::host.'/auth/v2.0/access-token/b2b',[
                 'grantType' => 'client_credentials'
             ]);
-            // dd([
-            //     'X-CLIENT-KEY' => $param['id_key'],
-            //     'X-SIGNATURE' => $param['signature'],
-            //     'X-TIMESTAMP' => $param['timestamp']
-            // ]);
+            dd([
+                'X-CLIENT-KEY' => $param['id_key'],
+                'X-SIGNATURE' => $param['signature'],
+                'X-TIMESTAMP' => $param['timestamp']
+            ]);
             Log::info(json_encode($response->json()));
             if($response->getStatusCode() != 200) throw new \Exception(json_encode($response->json()), $response->getStatusCode());
             return $response->json();
