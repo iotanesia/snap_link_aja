@@ -24,7 +24,7 @@ class Mandiri {
             ->post(self::host.'/auth/v2.0/access-token/b2b',[
                 'grantType' => 'client_credentials'
             ]);
-            dd($response->json()."- request ".[
+            dd([
                 'X-CLIENT-KEY' => $param['id_key'],
                 'X-SIGNATURE' => $param['signature'],
                 'X-TIMESTAMP' => $param['timestamp']
