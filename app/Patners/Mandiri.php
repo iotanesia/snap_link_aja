@@ -17,7 +17,7 @@ class Mandiri {
             ->withoutVerifying()
             ->withHeaders([
                 'X-CLIENT-KEY' => $param['id_key'],
-                'X-SIGNATURE' => $param['signature'],
+                // 'X-SIGNATURE' => $param['signature'],
                 'X-TIMESTAMP' => $param['timestamp']
             ])
             ->contentType("application/json")
