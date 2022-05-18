@@ -37,12 +37,13 @@ class Mandiri {
     public static function authenticateMandiri($request)
     {
         try {
-            // $date = Helper::getDateNow();
+            $date = Helper::getDateNow();
             // dd($date);
 
                  // '2022-05-18T18:41:33.517+07:00'
-            $date = '2022-05-18T16:39:30.610+07:00';
+            // $date = '2022-05-18T16:39:30.610+07:00';
             $private_key = Storage::get('private_mandiri.key');
+            dd($private_key);
             $stringToSign = Snap::CLIENT_ID_MANDIRI."|".$date;
             Log::info("plaintext: ".$stringToSign);
             $binary_signature="";
