@@ -17,14 +17,18 @@ class Mandiri {
             ->withoutVerifying()
             ->withHeaders([
                 'X-CLIENT-KEY' => $param['id_key'],
-                // 'X-SIGNATURE' => $param['signature'],
+                'X-SIGNATURE' => $param['signature'],
                 'X-TIMESTAMP' => $param['timestamp']
             ])
             ->contentType("application/json")
             ->post(self::host.'/auth/v2.0/access-token/b2b',[
                 'grantType' => 'client_credentials'
             ]);
-            dd($response->json());
+            dd([
+                'X-CLIENT-KEY' => $param['id_key'],
+                'X-SIGNATURE' => $param['signature'],
+                'X-TIMESTAMP' => $param['timestamp']
+            ]);
             Log::info(json_encode($response->json()));
             if($response->getStatusCode() != 200) throw new \Exception(json_encode($response->json()), $response->getStatusCode());
             return $response->json();
