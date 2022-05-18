@@ -20,9 +20,9 @@ class Mandiri {
             $binary_signature="";
             openssl_sign($stringToSign, $binary_signature, $private_key, 'SHA256');
             $signature =base64_encode($binary_signature);
+            dd($signature);
             $param = [
-                // 'signature' => self::hex64($signature),
-                "signature" => 'DdL64XOGzRchXBFESbaSzhuBSGWItwcS0fDthUQmsdTFZsQoRxmG8iyg1WBu761umIKcLCJbIDQplIyifzVJmWDO3UA8hk4giYK4ysYK6jQR9ohhZ4qqLysIxb8mq5ucUEki0S8nBdLND9Zw8g0J0gQXmMXEJmkMkJtW7+lBX2qANOLp7SZYbqNJrZi9KP1yjoFvoWoQq5NKjmUaxpFb97BBxqGdvIo1Sy5gHePPEX5f0S3AX+k5XgLEAcrxVgrtec0zLass7qQKj61r3LM0wNhmQrZnc9v8X+3wfhpmZLTZHZeh3swQbKr+HwPdznPJrGuNbMF1kFqd8VzFZdLaOg==',
+                'signature' => self::hex64($signature),
                 'timestamp' => $date,
                 'id_key' => Snap::CLIENT_ID_MANDIRI
             ];
