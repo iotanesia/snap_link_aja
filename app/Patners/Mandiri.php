@@ -14,7 +14,7 @@ class Mandiri {
     {
         try {
             $response = Http::timeout(10)
-            ->withoutVerifying()
+            // ->withoutVerifying()
             ->withHeaders([
                 'X-CLIENT-KEY' => $param['id_key'],
                 // 'X-SIGNATURE' => $param['signature'],
