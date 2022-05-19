@@ -25,7 +25,7 @@ class Mandiri {
                 'grantType' => 'client_credentials'
             ]);
 
-            dd(json_encode($response->json()).' - '.json_encode([
+            dd(json_encode($response->json()).' - headers - '.json_encode([
                 'X-CLIENT-KEY' => $param['id_key'],
                 'X-SIGNATURE' => $param['signature'],
                 'X-TIMESTAMP' => $param['timestamp']
