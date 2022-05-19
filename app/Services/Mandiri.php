@@ -43,7 +43,7 @@ class Mandiri {
             Log::info("plaintext: ".$stringToSign);
             $binary_signature="";
             openssl_sign($stringToSign, $binary_signature, $private_key, 'SHA256');
-            $signature = Helper::base64url_encode($binary_signature);
+            $signature = base64_encode($binary_signature);
             // dd($signature);
             $param = [
                 'signature' => $signature,
