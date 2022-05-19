@@ -43,10 +43,10 @@ class Mandiri {
             Log::info("plaintext: ".$stringToSign);
             $binary_signature="";
             openssl_sign($stringToSign, $binary_signature, $private_key, 'SHA256');
-            $signature =base64_encode($binary_signature);
+            $signature = Helper::base64url_encode($binary_signature);
             // dd($signature);
             $param = [
-                'signature' => self::hex64($signature),
+                'signature' => $signature,
                 'timestamp' => $date,
                 'id_key' => Snap::CLIENT_ID_MANDIRI
             ];
