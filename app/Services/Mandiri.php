@@ -46,7 +46,7 @@ class Mandiri {
             $signature =base64_encode($binary_signature);
             // dd($signature);
             $param = [
-                'signature' => $signature,
+                'signature' => self::hex64($signature),
                 'timestamp' => $date,
                 'id_key' => Snap::CLIENT_ID_MANDIRI
             ];
