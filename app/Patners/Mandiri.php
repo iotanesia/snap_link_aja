@@ -25,11 +25,14 @@ class Mandiri {
                 'grantType' => 'client_credentials'
             ]);
 
-            dd([
-                'X-CLIENT-KEY' => $param['id_key'],
-                'X-SIGNATURE' => $param['signature'],
-                'X-TIMESTAMP' => $param['timestamp']
-            ]);
+            if($param['debug']){
+                dd([
+                    'X-CLIENT-KEY' => $param['id_key'],
+                    'X-SIGNATURE' => $param['signature'],
+                    'X-TIMESTAMP' => $param['timestamp']
+                ]);
+            }
+
             // dd(json_encode($response->json()).' - headers - '.json_encode([
             //     'X-CLIENT-KEY' => $param['id_key'],
             //     'X-SIGNATURE' => $param['signature'],
