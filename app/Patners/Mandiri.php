@@ -8,8 +8,6 @@ use Illuminate\Support\Facades\Log;
 use App\ApiHelper as Helper;
 class Mandiri {
 
-    // const host = 'https://10.243.131.20:4001/openapi';
-    const host = 'https://mandiri-snap.linkaja.dev:4001/openapi';
     public static function getAccessToken($param)
     {
         try {
@@ -21,23 +19,9 @@ class Mandiri {
                 'X-TIMESTAMP' => $param['timestamp']
             ])
             ->contentType("application/json")
-            ->post(self::host.'/auth/v2.0/access-token/b2b',[
+            ->post(config('services.mandiri.host').'/auth/v2.0/access-token/b2b',[
                 'grantType' => 'client_credentials'
             ]);
-
-            if($param['debug']){
-                dd([
-                    'X-CLIENT-KEY' => $param['id_key'],
-                    'X-SIGNATURE' => $param['signature'],
-                    'X-TIMESTAMP' => $param['timestamp']
-                ]);
-            }
-
-            // dd(json_encode($response->json()).' - headers - '.json_encode([
-            //     'X-CLIENT-KEY' => $param['id_key'],
-            //     'X-SIGNATURE' => $param['signature'],
-            //     'X-TIMESTAMP' => $param['timestamp']
-            // ]));
             Log::info(json_encode($response->json()));
             if($response->getStatusCode() != 200) throw new \Exception(json_encode($response->json()), $response->getStatusCode());
             return $response->json();
@@ -61,7 +45,7 @@ class Mandiri {
                 'CHANNEL-ID' => $param['channelId']
             ])
             ->contentType("application/json")
-            ->post(self::host.$param['url'], $param['body']);
+            ->post(config('services.mandiri.host').$param['url'], $param['body']);
             Log::info(json_encode($response->json()));
             if($response->getStatusCode() != 200) throw new \Exception(json_encode($response->json()), $response->getStatusCode());
             return $response->json();

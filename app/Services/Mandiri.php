@@ -14,42 +14,16 @@ class Mandiri {
     {
         try {
             $date = Helper::getDateNow();
-            $private_key = Storage::get('private_mandiri.key');
+            $private_key = Storage::get(config('services.mandiri.key').'.key');
             $stringToSign = Snap::CLIENT_ID_MANDIRI."|".$date;
             Log::info("plaintext: ".$stringToSign);
             $binary_signature="";
             openssl_sign($stringToSign, $binary_signature, $private_key, 'SHA256');
             $signature =base64_encode($binary_signature);
-            dd($signature);
-            $param = [
-                'signature' => self::hex64($signature),
-                'timestamp' => $date,
-                'id_key' => Snap::CLIENT_ID_MANDIRI
-            ];
-            $response = Patner::getAccessToken($param);
-            $response['timestamp'] = $date;
-            return $response;
-        } catch (\Throwable $th) {
-            throw $th;
-        }
-    }
-
-    public static function authenticateMandiri($request)
-    {
-        try {
-            $date = Helper::getDateNow();
-            $private_key = Storage::get('private_mandiri.key');
-            $stringToSign = Snap::CLIENT_ID_MANDIRI."|".$date;
-            Log::info("plaintext: ".$stringToSign);
-            $binary_signature="";
-            openssl_sign($stringToSign, $binary_signature, $private_key, 'SHA256');
-            $signature = base64_encode($binary_signature);
-            // dd($signature);
             $param = [
                 'signature' => $signature,
                 'timestamp' => $date,
-                'id_key' => Snap::CLIENT_ID_MANDIRI,
-                'debug' => $request->debug
+                'id_key' => Snap::CLIENT_ID_MANDIRI
             ];
             $response = Patner::getAccessToken($param);
             $response['timestamp'] = $date;

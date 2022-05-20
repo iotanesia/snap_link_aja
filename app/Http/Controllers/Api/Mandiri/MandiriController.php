@@ -19,17 +19,6 @@ class MandiriController extends Controller
         }
     }
 
-    public function signatureAuthMandiri(Request $request)
-    {
-        try {
-            return ResponseInterface::resultResponse(
-                Mandiri::authenticateMandiri($request)
-            );
-        } catch (\Throwable $th) {
-            return ResponseInterface::setErrorResponse($th);
-        }
-    }
-
     public function accountInquiryInternal(Request $request)
     {
         try {

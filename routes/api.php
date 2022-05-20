@@ -69,7 +69,6 @@ Route::prefix('v1')
     ->group(function ()
     {
         Route::post('/signature-auth',[MandiriController::class,'signatureAuth']);
-        Route::post('/signature-auth-mandiri',[MandiriController::class,'signatureAuthMandiri']);
         Route::post('/account-inquiry-internal',[MandiriController::class,'accountInquiryInternal']);
         Route::post('/account-inquiry-status',[MandiriController::class,'accountInquiryStatus']);
         Route::post('/transfer-intrabank',[MandiriController::class,'transferIntrabank']);

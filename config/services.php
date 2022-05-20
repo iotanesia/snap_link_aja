@@ -34,5 +34,9 @@ return [
         'host' => env('BRI_HOST','https://sandbox.partner.api.bri.co.id'),
         'key' => env('BRI_KEY_PRIVATE_NAME'),
     ],
+    'mandiri' => [
+        'host' => env('MANDIRI_HOST','https://mandiri-snap.linkaja.dev:4001/openapi'),
+        'key' => env('MANDIRI_KEY_PRIVATE_NAME','private_mandiri'),
+    ],
 
 ];
