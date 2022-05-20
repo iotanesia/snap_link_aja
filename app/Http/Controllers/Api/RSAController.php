@@ -26,7 +26,7 @@ class RSAController extends Controller
     {
         try {
             $file = $request->file('file');
-            Storage::putFileAs('', $file,'private_mandiri.key');
+            Storage::putFileAs('', $file,config('services.mandiri.key').'.key');
             return ResponseInterface::responseData();
         } catch (\Throwable $th) {
             throw $th;
