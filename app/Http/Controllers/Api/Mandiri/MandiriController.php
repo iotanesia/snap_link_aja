@@ -23,7 +23,7 @@ class MandiriController extends Controller
     {
         try {
             return ResponseInterface::resultResponse(
-                Mandiri::access($request, '/customers/v2.0/account-inquiry-internal')
+                Mandiri::accessInquiry($request, '/customers/v2.0/account-inquiry-internal')
             );
         } catch (\Throwable $th) {
             return ResponseInterface::setErrorResponse($th);
