@@ -14,6 +14,8 @@ class Mandiri {
     {
         try {
             $date = Helper::getDateNow();
+            dd($date);
+
             $private_key = Storage::get(config('services.mandiri.key').'.key');
             $stringToSign = Snap::CLIENT_ID_MANDIRI."|".$date;
             Log::info("plaintext: ".$stringToSign);
@@ -55,7 +57,6 @@ class Mandiri {
                 'request' => $request,
                 'token' => $auth['accessToken']
             ];
-            dd($params);
             $secondSignature = self::generateSecondSignature($params);
             $param = [
                 'signature' => hash_hmac('sha512', $secondSignature, snap::CLIENT_SECRET_MANDIRI),
