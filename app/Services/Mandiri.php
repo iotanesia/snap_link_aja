@@ -57,8 +57,7 @@ class Mandiri {
             ];
             $secondSignature = self::generateSecondSignature($params);
             $param = [
-                // 'signature' => hash_hmac('sha512', $secondSignature, snap::CLIENT_SECRET_MANDIRI),
-                'signature' => $auth['signature'],
+                'signature' => hash_hmac('sha512', $secondSignature, snap::CLIENT_SECRET_MANDIRI),
                 'externalId' => rand(0,999999999),
                 'partnerId' => Snap::PATNER_ID_MANDIRI,
                 'auth' => $params['token'],
@@ -67,6 +66,7 @@ class Mandiri {
                 'timestamp' => $params['timeStamp'],
                 'url' => $url
             ];
+            dd($param);
             return Patner::snapService($param);
         } catch (\Throwable $th) {
             throw $th;
