@@ -14,7 +14,7 @@ class Mandiri {
     {
         try {
             $date = Helper::getDateNow();
-            $private_key = Storage::get(config('services.mandiri.key').'.key');
+            $private_key = Storage::get('mandiri.key');
             $stringToSign = Snap::CLIENT_ID_MANDIRI."|".$date;
             Log::info("plaintext: ".$stringToSign);
             $binary_signature="";
@@ -43,34 +43,6 @@ class Mandiri {
           $return .= chr(hexdec($pair));
         }
         return base64_encode($return);
-    }
-
-    public static function accessInquiry($request, $url)
-    {
-        try {
-            $auth = self::authenticate($request);
-            dd($auth);
-            $params = [
-                'timeStamp' => $auth['timestamp'],
-                'url' => $url,
-                'request' => $request,
-                'token' => $auth['accessToken']
-            ];
-            $secondSignature = self::generateSecondSignature($params);
-            $param = [
-                'signature' => hash_hmac('sha512', $secondSignature, snap::CLIENT_SECRET_MANDIRI),
-                'externalId' => rand(0,999999999),
-                'partnerId' => Snap::PATNER_ID_MANDIRI,
-                'auth' => $params['token'],
-                'channelId' => 87899,
-                'body' => $request->all(),
-                'timestamp' => $params['timeStamp'],
-                'url' => $url
-            ];
-            return Patner::snapService($param);
-        } catch (\Throwable $th) {
-            throw $th;
-        }
     }
 
     public static function access($request, $url)
