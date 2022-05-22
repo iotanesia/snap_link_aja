@@ -78,7 +78,8 @@ class Mandiri {
     {
         $body = $param['request']->all();
         $minify = json_encode($body);
-        $hexstring = strtolower(self::hex64(hash('sha256', $minify)));
+        // $hexstring = strtolower(self::hex64(hash('sha256', $minify)));
+        $hexstring = strtolower(hash('sha256', $minify));
         $payload = $param['request']->getMethod().':'.$param['url'].':'.$param['token'].':'.(string) $hexstring.':'.$param['timeStamp'];
         return $payload;
     }
