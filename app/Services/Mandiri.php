@@ -49,6 +49,8 @@ class Mandiri {
     public static function access($request, $url)
     {
         try {
+
+
             $auth = self::authenticate($request);
             $params = [
                 'timeStamp' => $auth['timestamp'],
@@ -59,9 +61,16 @@ class Mandiri {
             $secondSignature = self::generateSecondSignature($params);
             $signature = base64_encode(hash_hmac('sha512', $secondSignature, snap::CLIENT_SECRET_MANDIRI));
 
+            // dd($signature);
+            // dd([
+            //     'payload' => $secondSignature,
+            //     'signature' => $signature,
+            //     'body' => json_encode($request->all()),
+            // ]);
+
             $param = [
                 'signature' => $signature,
-                'externalId' => rand(0,999999999),
+                'externalId' => 95201095162054880,
                 'partnerId' => Snap::PATNER_ID_MANDIRI,
                 'auth' => $params['token'],
                 'channelId' => 87899,
@@ -69,6 +78,7 @@ class Mandiri {
                 'timestamp' => $params['timeStamp'],
                 'url' => $url
             ];
+
             return Patner::snapService($param);
         } catch (\Throwable $th) {
             throw $th;

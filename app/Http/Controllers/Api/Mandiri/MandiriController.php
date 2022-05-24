@@ -23,7 +23,7 @@ class MandiriController extends Controller
     {
         try {
             return ResponseInterface::resultResponse(
-                Mandiri::access($request, '/customers/v2.0/account-inquiry-internal')
+                Mandiri::access($request, '/openapi/customers/v2.0/account-inquiry-internal')
             );
         } catch (\Throwable $th) {
             return ResponseInterface::setErrorResponse($th);
@@ -34,7 +34,7 @@ class MandiriController extends Controller
     {
         try {
             return ResponseInterface::resultResponse(
-                Mandiri::access($request, '/transactions/v2.0/transfer/status')
+                Mandiri::access($request, '/openapi/transactions/v2.0/transfer/status')
             );
         } catch (\Throwable $th) {
             return ResponseInterface::setErrorResponse($th);
