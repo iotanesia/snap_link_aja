@@ -45,7 +45,7 @@ class MandiriController extends Controller
     {
         try {
             return ResponseInterface::resultResponse(
-                Mandiri::access($request, '/openapi/transactions/v2.0/transfer-intrabank')
+                Mandiri::access($request, '/transactions/v2.0/transfer-intrabank')
             );
         } catch (\Throwable $th) {
             return ResponseInterface::setErrorResponse($th);

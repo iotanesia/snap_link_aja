@@ -34,7 +34,8 @@ class Mandiri {
     }
 
     static function hex64($signature) {
-        return bin2hex(base64_decode($signature));;
+        return bin2hex(base64_decode($signature));
+        // return bin2hex($signature);
     }
 
     static function hex_to_base64($hex){
@@ -51,7 +52,7 @@ class Mandiri {
             $auth = self::authenticate($request);
             $params = [
                 'timeStamp' => $auth['timestamp'],
-                'url' => $url,
+                'url' => '/openapi'.$url,
                 'request' => $request,
                 'token' => $auth['accessToken']
             ];
@@ -77,9 +78,11 @@ class Mandiri {
     public static function generateSecondSignature($param)
     {
         $body = $param['request']->all();
-        $minify = json_encode($body);
+        $minify = str_replace('null', '""', json_encode($body));
+        // $minify = '{"partnerReferenceNo":"1205868175767876","amount":{"value":"110000.00","currency":"IDR"},"sourceAccountNo":"1150006399259","beneficiaryAccountNo":"60004400184","remark":"","transactionDate":"2022-05-24T11:15:35.920+07:00","beneficiaryEmail":"rendi.matrido1995@gmail.com","additionalInfo":{"reportCode":"","senderInstrument":"tunai","senderAccountNo":"08786561231224","senderName":"rendi matrido","senderCountry":"id","senderCostumerType":"1","beneficiaryAccountName":"","beneficiaryInstrument":"","beneficiaryCustomerType":""}}';
         // $hexstring = strtolower(self::hex64(hash('sha256', $minify)));
         $hexstring = strtolower(hash('sha256', $minify));
+        dd($param['request']->getMethod().':'.$param['url'].':'.$param['token'].':'.(string) $hexstring.':'.$param['timeStamp']);
         $payload = $param['request']->getMethod().':'.$param['url'].':'.$param['token'].':'.(string) $hexstring.':'.$param['timeStamp'];
         return $payload;
     }
