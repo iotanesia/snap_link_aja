@@ -35,7 +35,6 @@ class Mandiri {
 
     static function hex64($signature) {
         return bin2hex(base64_decode($signature));
-        // return bin2hex($signature);
     }
 
     static function hex_to_base64($hex){
