@@ -52,22 +52,16 @@ class Mandiri {
 
             $auth = self::authenticate($request);
             $params = [
-                // 'timeStamp' => '2022-05-24T23:00:59.672+07:00',
                 'timeStamp' => $auth['timestamp'],
                 'url' => $url,
                 'request' => $request,
                 'token' => $auth['accessToken']
-                // 'token' => 'eyJraWQiOiJzc29zIiwiYWxnIjoiUlM1MTIifQ.eyJzdWIiOiJzeXM6ZGVmYXVsdEFwcGxpY2F0aW9uIiwiYXVkIjpbInN5czpkZWZhdWx0QXBwbGljYXRpb24iLCJqd3QtYXVkIl0sImNsaWVudElkIjoiMDQzNTI1NzEtMTZmOS00ZWU4LWE2NTQtYjZhZTA2YmQ4ZWM2Iiwic2lnbiI6IlgtUEFSVE5FUi1JRCIsImlzcyI6Imp3dC1pc3N1ZXIiLCJwYXJ0bmVySWQiOiJVQVRDT1JQQVkiLCJleHAiOjE2NTM0MDgwMTQsImlhdCI6MTY1MzQwNzExNH0.g763E4eXmPzKIwOk_ycIpSxv05evSJt5GoyFQKsTv-STojmrv2Lj77aTrTgx_385MyZlpx_nqRJm8O1nQEF6JFXOmhL7_zQ1xl-vWAYoTz_o1RSMa3g0sx7Q9D2JfDQgBqjZn3KVa9idQprxvPtaowW1seApGfmAy6IOX_WYFiAeEKTExXuibbo8qgP1UC_aDX4fImpXaFd_enoUxf0uYNTb5ZAZBAgk_n_w_NpGZtTFkc4m1N9WA9jQ8a2weF6dFeauzGi9qwLYbn3Qq346LjaySl-cUMN0DujOUJj_LaofZmQEHtlZTseBqwHaS_OVBbqbay_T9xm4TOEy2eiuDw'
             ];
             $secondSignature = self::generateSecondSignature($params);
-            // $signature = base64_encode(md5((hash_hmac('sha512', $secondSignature, utf8_encode(snap::CLIENT_SECRET_MANDIRI))), true));
             $signature = base64_encode(((hash_hmac('sha512', $secondSignature, snap::CLIENT_SECRET_MANDIRI, true))));
-
-            dd($secondSignature, $signature);
-
             $param = [
                 'signature' => $signature,
-                'externalId' => 95201095162054880,
+                'externalId' => rand(0,999999999),
                 'partnerId' => Snap::PATNER_ID_MANDIRI,
                 'auth' => $params['token'],
                 'channelId' => 87899,
@@ -87,7 +81,6 @@ class Mandiri {
         $body = $param['request']->all();
         $minify = str_replace('null', '""', json_encode($body));
         $hexstring = strtolower(hash('sha256', $minify));
-        // dd($param['request']->getMethod().':'.$param['url'].':'.$param['token'].':'.(string) $hexstring.':'.$param['timeStamp']);
         $payload = $param['request']->getMethod().':'.$param['url'].':'.$param['token'].':'.(string) $hexstring.':'.$param['timeStamp'];
         return $payload;
     }
