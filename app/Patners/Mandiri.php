@@ -10,7 +10,6 @@ class Mandiri {
 
     public static function getAccessToken($param)
     {
-        dd($param['signature']);
         try {
             $response = Http::timeout(10)
             ->withoutVerifying()

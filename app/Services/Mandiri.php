@@ -50,23 +50,20 @@ class Mandiri {
     {
         try {
 
-
             $auth = self::authenticate($request);
             $params = [
+                // 'timeStamp' => '2022-05-24T23:00:59.672+07:00',
                 'timeStamp' => $auth['timestamp'],
-                'url' => '/openapi'.$url,
+                'url' => $url,
                 'request' => $request,
                 'token' => $auth['accessToken']
+                // 'token' => 'eyJraWQiOiJzc29zIiwiYWxnIjoiUlM1MTIifQ.eyJzdWIiOiJzeXM6ZGVmYXVsdEFwcGxpY2F0aW9uIiwiYXVkIjpbInN5czpkZWZhdWx0QXBwbGljYXRpb24iLCJqd3QtYXVkIl0sImNsaWVudElkIjoiMDQzNTI1NzEtMTZmOS00ZWU4LWE2NTQtYjZhZTA2YmQ4ZWM2Iiwic2lnbiI6IlgtUEFSVE5FUi1JRCIsImlzcyI6Imp3dC1pc3N1ZXIiLCJwYXJ0bmVySWQiOiJVQVRDT1JQQVkiLCJleHAiOjE2NTM0MDgwMTQsImlhdCI6MTY1MzQwNzExNH0.g763E4eXmPzKIwOk_ycIpSxv05evSJt5GoyFQKsTv-STojmrv2Lj77aTrTgx_385MyZlpx_nqRJm8O1nQEF6JFXOmhL7_zQ1xl-vWAYoTz_o1RSMa3g0sx7Q9D2JfDQgBqjZn3KVa9idQprxvPtaowW1seApGfmAy6IOX_WYFiAeEKTExXuibbo8qgP1UC_aDX4fImpXaFd_enoUxf0uYNTb5ZAZBAgk_n_w_NpGZtTFkc4m1N9WA9jQ8a2weF6dFeauzGi9qwLYbn3Qq346LjaySl-cUMN0DujOUJj_LaofZmQEHtlZTseBqwHaS_OVBbqbay_T9xm4TOEy2eiuDw'
             ];
             $secondSignature = self::generateSecondSignature($params);
-            $signature = base64_encode(hash_hmac('sha512', $secondSignature, snap::CLIENT_SECRET_MANDIRI));
+            // $signature = base64_encode(md5((hash_hmac('sha512', $secondSignature, utf8_encode(snap::CLIENT_SECRET_MANDIRI))), true));
+            $signature = base64_encode(((hash_hmac('sha512', $secondSignature, snap::CLIENT_SECRET_MANDIRI, true))));
 
-            // dd($signature);
-            // dd([
-            //     'payload' => $secondSignature,
-            //     'signature' => $signature,
-            //     'body' => json_encode($request->all()),
-            // ]);
+            dd($secondSignature, $signature);
 
             $param = [
                 'signature' => $signature,
@@ -89,10 +86,8 @@ class Mandiri {
     {
         $body = $param['request']->all();
         $minify = str_replace('null', '""', json_encode($body));
-        // $minify = '{"partnerReferenceNo":"1205868175767876","amount":{"value":"110000.00","currency":"IDR"},"sourceAccountNo":"1150006399259","beneficiaryAccountNo":"60004400184","remark":"","transactionDate":"2022-05-24T11:15:35.920+07:00","beneficiaryEmail":"rendi.matrido1995@gmail.com","additionalInfo":{"reportCode":"","senderInstrument":"tunai","senderAccountNo":"08786561231224","senderName":"rendi matrido","senderCountry":"id","senderCostumerType":"1","beneficiaryAccountName":"","beneficiaryInstrument":"","beneficiaryCustomerType":""}}';
-        // $hexstring = strtolower(self::hex64(hash('sha256', $minify)));
         $hexstring = strtolower(hash('sha256', $minify));
-        dd($param['request']->getMethod().':'.$param['url'].':'.$param['token'].':'.(string) $hexstring.':'.$param['timeStamp']);
+        // dd($param['request']->getMethod().':'.$param['url'].':'.$param['token'].':'.(string) $hexstring.':'.$param['timeStamp']);
         $payload = $param['request']->getMethod().':'.$param['url'].':'.$param['token'].':'.(string) $hexstring.':'.$param['timeStamp'];
         return $payload;
     }
