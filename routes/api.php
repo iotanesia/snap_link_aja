@@ -70,7 +70,7 @@ Route::prefix('v1')
     {
         Route::post('/signature-auth',[MandiriController::class,'signatureAuth']);
         Route::post('/account-inquiry-internal',[MandiriController::class,'accountInquiryInternal']);
-        Route::post('/account-inquiry-status',[MandiriController::class,'accountInquiryStatus']);
+        Route::post('/transfer-status',[MandiriController::class,'accountInquiryStatus']);
         Route::post('/transfer-intrabank',[MandiriController::class,'transferIntrabank']);
     });
 
