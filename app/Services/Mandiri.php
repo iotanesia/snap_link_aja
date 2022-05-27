@@ -60,7 +60,7 @@ class Mandiri {
             $signature = base64_encode(((hash_hmac('sha512', $secondSignature, snap::CLIENT_SECRET_MANDIRI, true))));
             $param = [
                 'signature' => $signature,
-                'externalId' => rand(0,999999999),
+                'externalId' => 999,
                 'partnerId' => Snap::PATNER_ID_MANDIRI,
                 'auth' => $params['token'],
                 'channelId' => 87899,
