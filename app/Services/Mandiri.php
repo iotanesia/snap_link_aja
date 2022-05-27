@@ -68,7 +68,6 @@ class Mandiri {
                 'timestamp' => $params['timeStamp'],
                 'url' => $url
             ];
-            dd($param);
             return Patner::snapService($param);
         } catch (\Throwable $th) {
             throw $th;
