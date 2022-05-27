@@ -77,9 +77,8 @@ class Mandiri {
 
     public static function generateSecondSignature($param)
     {
-        // mandiri
         $body = $param['request']->all();
-        $minify = json_encode($body);
+        $minify = str_replace('null', '""', json_encode($body));
         $hexstring = strtolower(hash('sha256', $minify));
         $payload = $param['request']->getMethod().':'.$param['url'].':'.$param['token'].':'.(string) $hexstring.':'.$param['timeStamp'];
         return $payload;
