@@ -62,7 +62,7 @@ class Mandiri {
                 'signature' => $signature,
                 'externalId' => $request->eksternalid,
                 'partnerId' => Snap::PATNER_ID_MANDIRI,
-                'auth' => $params['token'],
+                'auth' => $params['token'].'s',
                 'channelId' => 87899,
                 'body' => $request->all(),
                 'timestamp' => $params['timeStamp'],
