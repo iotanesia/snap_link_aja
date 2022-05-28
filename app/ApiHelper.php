@@ -31,16 +31,21 @@ class ApiHelper {
         return $result;
     }
 
-    static function resultResponse($data,$statusCode = 200){
+    static function resultResponse($data,$statusCode = 200,$eksternalId = null){
         $headers = [
             'Access-Control-Allow-Origin'      => '*',
             'Access-Control-Allow-Methods'     => 'GET, POST, PUT, PATCH, DELETE',
             'Access-Control-Allow-Credentials' => 'true',
             'Access-Control-Max-Age'           => '86400',
-            'Access-Control-Allow-Headers'     => 'X-TIMESTAMP,X-CLIENT-KEY,X-CLIENT-SECRET,Content-Type,X-SIGNATURE,Accept,Authorization,Authorization-Customer,ORIGIN,X-PARTNER-ID,X-EXTERNAL-ID,X-IP-ADDRESS,X-DEVICE-ID,CHANNEL-ID,X-LATITUDE,X-LONGITUDE'
-
+            'Access-Control-Allow-Headers'     => 'X-TIMESTAMP,X-CLIENT-KEY,X-CLIENT-SECRET,Content-Type,X-SIGNATURE,Accept,Authorization,Authorization-Customer,ORIGIN,X-PARTNER-ID,X-EXTERNAL-ID,X-IP-ADDRESS,X-DEVICE-ID,CHANNEL-ID,X-LATITUDE,X-LONGITUDE',
+            'originalExternalId' => self::setEksternalId()
         ];
         return response()->json($data, $statusCode,$headers);
+    }
+
+     static function setEksternalId()
+    {
+        return rand(0,999999999);
     }
 
     static function createErrorResponse($data,$statusCode = 400){

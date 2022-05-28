@@ -58,7 +58,7 @@ class Bri {
             $secondSignature = self::generateSecondSignature($params);
             $param = [
                 'signature' => hash_hmac('sha512', $secondSignature, snap::CLIENT_SECRET_BRI),
-                'externalId' => rand(0,999999999),
+                'externalId' => Helper::setEksternalId(),
                 'partnerId' => 90890,
                 'auth' => $params['token'],
                 'channelId' => 87899,

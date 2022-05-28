@@ -46,7 +46,14 @@ class Mandiri {
             ])
             ->contentType("application/json")
             ->post(config('services.mandiri.host').$param['url'], $param['body']);
-            Log::info(json_encode($response->json()));
+            Log::info([
+                'Authorization' => 'Bearer '.$param['auth'],
+                'X-SIGNATURE' => $param['signature'],
+                'X-TIMESTAMP' => $param['timestamp'],
+                'X-PARTNER-ID' => $param['partnerId'],
+                'X-EXTERNAL-ID' => $param['externalId'],
+                'CHANNEL-ID' => $param['channelId']
+            ]);
             if($response->getStatusCode() != 200) throw new \Exception(json_encode($response->json()), $response->getStatusCode());
             return $response->json();
         } catch (\Throwable $th) {

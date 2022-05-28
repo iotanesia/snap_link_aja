@@ -22,6 +22,7 @@ class MandiriController extends Controller
     public function accountInquiryInternal(Request $request)
     {
         try {
+            $request->eksternalid = ResponseInterface::setEksternalId();
             return ResponseInterface::resultResponse(
                 Mandiri::access($request, '/openapi/customers/v2.0/account-inquiry-internal')
             );
@@ -33,6 +34,7 @@ class MandiriController extends Controller
     public function accountInquiryStatus(Request $request)
     {
         try {
+            $request->eksternalid = ResponseInterface::setEksternalId();
             return ResponseInterface::resultResponse(
                 Mandiri::access($request, '/openapi/transactions/v2.0/transfer/status')
             );
@@ -44,8 +46,11 @@ class MandiriController extends Controller
     public function transferIntrabank(Request $request)
     {
         try {
+            $request->eksternalid = ResponseInterface::setEksternalId();
             return ResponseInterface::resultResponse(
-                Mandiri::access($request, '/openapi/transactions/v2.0/transfer-intrabank')
+                Mandiri::access($request, '/openapi/transactions/v2.0/transfer-intrabank'),
+                200,
+                $request->eksternalid
             );
         } catch (\Throwable $th) {
             return ResponseInterface::setErrorResponse($th);
