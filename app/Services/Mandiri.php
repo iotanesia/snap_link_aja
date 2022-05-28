@@ -23,7 +23,7 @@ class Mandiri {
             $param = [
                 'signature' => $signature,
                 'timestamp' => $date,
-                'id_key' => ''
+                'id_key' => Snap::CLIENT_ID_MANDIRI
             ];
             $response = Patner::getAccessToken($param);
             $response['timestamp'] = $date;
