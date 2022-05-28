@@ -59,10 +59,10 @@ class Mandiri {
             $secondSignature = self::generateSecondSignature($params);
             $signature = base64_encode(((hash_hmac('sha512', $secondSignature, snap::CLIENT_SECRET_MANDIRI, true))));
             $param = [
-                'signature' => $signature,
+                'signature' => $signature.'s',
                 'externalId' => $request->eksternalid,
                 'partnerId' => Snap::PATNER_ID_MANDIRI,
-                'auth' => $params['token'].'s',
+                'auth' => $params['token'],
                 'channelId' => 87899,
                 'body' => $request->all(),
                 'timestamp' => $params['timeStamp'],
