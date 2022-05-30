@@ -23,9 +23,6 @@ use Spatie\Health\Http\Controllers\HealthCheckJsonResultsController;
 
 
 Route::get('health', HealthCheckJsonResultsController::class);
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 //with middleware
 Route::prefix('v1')
