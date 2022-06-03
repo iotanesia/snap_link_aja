@@ -7,13 +7,9 @@ use Firebase\JWT\Key;
 use Firebase\JWT\ExpiredException;
 use App\Constants\ErrorCode as EC;
 use App\Constants\ErrorMessage as EM;
-use App\Constants\Snap;
-use App\Exceptions\CustomException;
-// use App\Models\ResponseCode;
-use App\Services\ResponseCode;
-use Exception;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 class ApiHelper {
 
@@ -58,7 +54,7 @@ class ApiHelper {
 
         ];
         $codeSt = $statusCode == 0 ? 500 : $statusCode;
-        $code = ResponseCode::codeByMessage($data);
+        $code = 500;
         return response()->json([
             "responseCode" => $code ?? $codeSt,
             "responseMessage" => $data
@@ -95,28 +91,6 @@ class ApiHelper {
             "data" => $data['items'] ?? null
         ];
         return response()->json($response, 200);
-    }
-
-    static function responseDataSnap($httpCodeSlug = 'successful', $signature = null, $token = null, $additionlInfo = null) {
-        $responseCode = ResponseCode::httpCode($httpCodeSlug).EC::SERVICE_CODE.ResponseCode::caseCode($httpCodeSlug);
-        if($httpCodeSlug == 'successful') {
-            $tokenExp = self::decodeJwtSignature($token, $signature);
-            $response = [
-                "responseCode" => $responseCode,
-                "responseMessage" => ResponseCode::description($httpCodeSlug),
-                "accessToken" => $token,
-                "tokenType" => "Bearer",
-                "expiresIn" => $tokenExp->exp,
-            ];
-
-        } else {
-            $response = [
-                "responseCode" => $responseCode,
-                "responseMessage" => ResponseCode::description($httpCodeSlug),
-            ];
-        }
-
-        return response()->json($response, ResponseCode::httpCode($httpCodeSlug));
     }
 
     static function createResponse($EC, $EM, $data = false) {
@@ -263,9 +237,9 @@ class ApiHelper {
             $decoded_data = JWT::decode($token,new Key(env('JWT_SECRET'), 'HS256'));
             return $decoded_data->sub;
         } catch(ExpiredException $e) {
-            throw new Exception("expired");
+            throw new \Exception("expired");
         } catch(\Throwable $e) {
-            throw new Exception("failed");
+            throw new \Exception("failed");
         }
 
     }
@@ -339,6 +313,32 @@ class ApiHelper {
 
         $message = json_decode($data,true);
         return isset($message['responseMessage']) ? $message['responseMessage'] : $data;
+    }
+
+    static function getUserIP(){
+        // Get real visitor IP behind CloudFlare network
+        if (isset($_SERVER["HTTP_CF_CONNECTING_IP"])) {
+                $_SERVER['REMOTE_ADDR'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
+                $_SERVER['HTTP_CLIENT_IP'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
+        }
+        $client  = @$_SERVER['HTTP_CLIENT_IP'];
+        $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
+        $remote  = $_SERVER['REMOTE_ADDR'];
+
+        if(filter_var($client, FILTER_VALIDATE_IP))
+        {
+            $ip = $client;
+        }
+        elseif(filter_var($forward, FILTER_VALIDATE_IP))
+        {
+            $ip = $forward;
+        }
+        else
+        {
+            $ip = $remote;
+        }
+
+        return $ip;
     }
 
 }

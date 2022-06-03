@@ -16,7 +16,6 @@ class Mandiri {
             $date = Helper::getDateNow();
             $private_key = Storage::get(config('services.mandiri.key').'.key');
             $stringToSign = Snap::CLIENT_ID_MANDIRI."|".$date;
-            Log::info("plaintext: ".$stringToSign);
             $binary_signature="";
             openssl_sign($stringToSign, $binary_signature, $private_key, 'SHA256');
             $signature =base64_encode($binary_signature);

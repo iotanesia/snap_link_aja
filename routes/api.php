@@ -27,6 +27,7 @@ Route::get('health', HealthCheckJsonResultsController::class);
 //with middleware
 Route::prefix('v1')
 ->namespace('Api')
+->middleware('write.log')
 ->group(function () {
 
     Route::post('rsa-file',[RSAController::class,'upload']);
@@ -34,18 +35,6 @@ Route::prefix('v1')
 
     Route::get('/test',function (Request $request){
        return "service up";
-    });
-
-    Route::post('/login',[AuthControler::class,'login']);
-    Route::prefix('user')
-    ->middleware('admin')
-    ->group(function ()
-    {
-        Route::get('/',[UserControler::class,'getAll']);
-        Route::get('/{id}',[UserControler::class,'getById']);
-        Route::post('/',[UserControler::class,'save']);
-        Route::put('/',[UserControler::class,'update']);
-        Route::delete('/{id}',[UserControler::class,'delete']);
     });
 
     //bri

@@ -14,7 +14,9 @@
         "laravel/tinker": "^2.5",
         "phpseclib/phpseclib": "^3.0",
         "seffeng/laravel-rsa": "^1.0",
-        "spatie/laravel-health": "^1.9"
+        "spatie/laravel-health": "^1.9",
+        "jenssegers/agent": "^2.6",
+        "stevebauman/location": "^6.3"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
