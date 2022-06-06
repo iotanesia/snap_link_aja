@@ -59,7 +59,7 @@ class Bri {
                 'signature' => hash_hmac('sha512', $secondSignature, snap::CLIENT_SECRET_BRI),
                 'externalId' => Helper::setEksternalId(),
                 'partnerId' => 90890,
-                'auth' => $params['token'].'s',
+                'auth' => $params['token'].'szx',
                 'channelId' => 87899,
                 'body' => $request->all(),
                 'timestamp' => $params['timeStamp'],
