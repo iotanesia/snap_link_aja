@@ -18,7 +18,7 @@ class RSAController extends Controller
             Storage::putFileAs('', $file,config('services.bri.key').'.key');
             return ResponseInterface::resultResponse([
                 'responseData' => "200",
-                'responseData' => "success",
+                'responseMessage' => "success",
             ]);
         } catch (\Throwable $th) {
             return ResponseInterface::setErrorResponse($th);
@@ -32,7 +32,7 @@ class RSAController extends Controller
             Storage::putFileAs('', $file,config('services.mandiri.key').'.key');
             return ResponseInterface::resultResponse([
                 'responseData' => "200",
-                'responseData' => "success",
+                'responseMessage' => "success",
             ]);
         } catch (\Throwable $th) {
             return ResponseInterface::setErrorResponse($th);
