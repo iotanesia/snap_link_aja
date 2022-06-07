@@ -16,9 +16,12 @@ class RSAController extends Controller
         try {
             $file = $request->file('file');
             Storage::putFileAs('', $file,config('services.bri.key').'.key');
-            return ResponseInterface::responseData();
+            return ResponseInterface::resultResponse([
+                'responseData' => "200",
+                'responseData' => "success",
+            ]);
         } catch (\Throwable $th) {
-            throw $th;
+            return ResponseInterface::setErrorResponse($th);
         }
     }
 
@@ -27,9 +30,12 @@ class RSAController extends Controller
         try {
             $file = $request->file('file');
             Storage::putFileAs('', $file,config('services.mandiri.key').'.key');
-            return ResponseInterface::responseData();
+            return ResponseInterface::resultResponse([
+                'responseData' => "200",
+                'responseData' => "success",
+            ]);
         } catch (\Throwable $th) {
-            throw $th;
+            return ResponseInterface::setErrorResponse($th);
         }
     }
 }
